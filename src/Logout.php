@@ -112,8 +112,7 @@ class Logout extends AbstractService
 
             if ($result !== $status) {
                 $msg = sprintf('Expected status "%s", got "%s"', $status, $result);
-                $this->error(new Exception($msg));
-                return $this->payload;
+                throw new Exception($msg);
             }
 
             $this->success($result);

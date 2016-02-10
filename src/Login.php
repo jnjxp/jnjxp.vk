@@ -134,9 +134,7 @@ class Login extends AbstractService
             $this->doLogin($auth, $username, $password);
 
             if (! $auth->isValid()) {
-                $error = new Exception('Unknown Authentication Error');
-                $this->error($error);
-                return $this->payload;
+                throw new Exception('Unknown Authentication Error');
             }
 
             $this->success();
