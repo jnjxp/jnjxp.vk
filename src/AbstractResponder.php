@@ -67,16 +67,16 @@ abstract class AbstractResponder
     protected $destination = '/';
 
     /**
-     * ViewScript
+     * View script
      *
-     * @var mixed
+     * @var string
      *
      * @access protected
      */
     protected $viewScript;
 
     /**
-     * ErrorViewScript
+     * Error view script
      *
      * @var string
      *
@@ -85,7 +85,7 @@ abstract class AbstractResponder
     protected $errorViewScript = 'jnjxp/vk/error';
 
     /**
-     * MessengerAttribute
+     * Messenger attribute
      *
      * @var string
      *
@@ -94,9 +94,9 @@ abstract class AbstractResponder
     protected $messengerAttribute = 'jnjxp/molniya:messenger';
 
     /**
-     * Success Message
+     * Success message
      *
-     * @var mixed
+     * @var string
      *
      * @access protected
      */
@@ -132,7 +132,7 @@ abstract class AbstractResponder
     /**
      * __construct
      *
-     * @param View $view DESCRIPTION
+     * @param View $view View Renderer
      *
      * @access public
      */
@@ -144,9 +144,9 @@ abstract class AbstractResponder
     /**
      * Set Destination
      *
-     * @param mixed $uri Destination path
+     * @param string $uri Destination path
      *
-     * @return mixed
+     * @return $this
      *
      * @access public
      */
@@ -157,11 +157,11 @@ abstract class AbstractResponder
     }
 
     /**
-     * SetViewScript
+     * Set view script
      *
-     * @param mixed $script DESCRIPTION
+     * @param string $script View script to render
      *
-     * @return mixed
+     * @return $this
      *
      * @access public
      */
@@ -172,11 +172,11 @@ abstract class AbstractResponder
     }
 
     /**
-     * SetErrorViewScript
+     * Set error view script
      *
-     * @param mixed $script DESCRIPTION
+     * @param string $script Error view script
      *
-     * @return mixed
+     * @return $this
      *
      * @access public
      */
@@ -187,11 +187,11 @@ abstract class AbstractResponder
     }
 
     /**
-     * SetMessengerAttribute
+     * Set messenger attribute
      *
-     * @param mixed $attr DESCRIPTION
+     * @param string $attr Request attribute holding a flash messenger
      *
-     * @return mixed
+     * @return $this
      *
      * @access public
      */
@@ -202,11 +202,11 @@ abstract class AbstractResponder
     }
 
     /**
-     * SetSuccessMessage
+     * Set success message
      *
-     * @param mixed $message DESCRIPTION
+     * @param string $message Flash message to set on success
      *
-     * @return mixed
+     * @return $this
      *
      * @access public
      */
@@ -217,7 +217,7 @@ abstract class AbstractResponder
     }
 
     /**
-     * __invoke
+     * Render appropriate view or redirect based on payload status
      *
      * @param Request  $request  PSR7 Request
      * @param Response $response PSR7 Response
@@ -245,7 +245,7 @@ abstract class AbstractResponder
     /**
      * Get Method For Payload
      *
-     * @return mixed
+     * @return string
      *
      * @access protected
      */
@@ -259,7 +259,7 @@ abstract class AbstractResponder
     }
 
     /**
-     * Render
+     * Render a view
      *
      * @param string $script Name of view to render
      * @param array  $data   Array of data to assign
@@ -291,9 +291,9 @@ abstract class AbstractResponder
     }
 
     /**
-     * Unknown
+     * Unknown status
      *
-     * @return mixed
+     * @return void
      *
      * @access protected
      */
@@ -307,7 +307,7 @@ abstract class AbstractResponder
     }
 
     /**
-     * No Content
+     * No Content - render forms
      *
      * @return void
      *
@@ -338,7 +338,7 @@ abstract class AbstractResponder
     /**
      * Failure
      *
-     * @return mixed
+     * @return void
      *
      * @access protected
      */
@@ -359,7 +359,7 @@ abstract class AbstractResponder
     /**
      * Error
      *
-     * @return mixed
+     * @return void
      *
      * @access protected
      */

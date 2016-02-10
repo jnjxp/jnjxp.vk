@@ -87,7 +87,7 @@ class Login extends AbstractService
      *
      * @access protected
      */
-    protected function authenticate(Auth $auth, $username, $password)
+    protected function doLogin(Auth $auth, $username, $password)
     {
         $this->auraLogin->login(
             $auth,
@@ -118,14 +118,13 @@ class Login extends AbstractService
                 'username' => $username,
                 'password' => (bool) $password
             ]
-        );
-
-        $payload->setExtras(['auth' => $auth]);
+        )->setExtras(['auth' => $auth]);
 
         try {
-            $this->authenticate($auth, $username, $password);
+            $this->doLogin($auth, $username, $password);
 
             if (! $auth->isValid()) {
+                // if not valid after login
                 $payload->setStatus(Status::ERROR)->setOutput(
                     new Exception('Unknown Authentication Error')
                 );
@@ -144,6 +143,8 @@ class Login extends AbstractService
             $this->notify('login.success', $payload);
 
         } catch (AuraException $e) {
+            // Aura\Auth throws various exceptions on failure
+            // @see https://github.com/auraphp/Aura.Auth#logging-in
             $payload->setStatus(Status::FAILURE)->setOutput($e);
             $this->notify('login.failure', $payload);
             return $payload;

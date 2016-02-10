@@ -43,7 +43,7 @@ use Jnjxp\Vk\AbstractResponder;
 class Responder extends AbstractResponder
 {
     /**
-     * ViewScript
+     * View script
      *
      * @var string
      *
@@ -52,7 +52,7 @@ class Responder extends AbstractResponder
     protected $viewScript = 'jnjxp/vk/login';
 
     /**
-     * SuccessMessage
+     * Success message
      *
      * @var string
      *

@@ -47,7 +47,7 @@ abstract class AbstractInput
      *
      * @param Request $request DESCRIPTION
      *
-     * @return mixed
+     * @return Aura\Auth\Auth
      *
      * @access protected
      */

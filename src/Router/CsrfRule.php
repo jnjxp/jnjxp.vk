@@ -53,7 +53,7 @@ class CsrfRule implements RuleInterface
     use AuthAttributeTrait;
 
     /**
-     * CSRF Key
+     * CSRF key in request body
      *
      * @var string
      *
@@ -62,7 +62,7 @@ class CsrfRule implements RuleInterface
     protected $csrfKey = '__csrf_value';
 
     /**
-     * Token
+     * Cross-site request forgery token tools.
      *
      * @var CsrfToken
      *
@@ -73,9 +73,7 @@ class CsrfRule implements RuleInterface
     /**
      * __construct
      *
-     * @param CsrfToken $token DESCRIPTION
-     *
-     * @return mixed
+     * @param CsrfToken $token Aura Cross-site request forgery token tools
      *
      * @access public
      */
@@ -87,9 +85,9 @@ class CsrfRule implements RuleInterface
     /**
      * Set CSRF Key
      *
-     * @param mixed $key DESCRIPTION
+     * @param string $key key in request body to expect token
      *
-     * @return mixed
+     * @return $this
      *
      * @access public
      */
@@ -100,7 +98,7 @@ class CsrfRule implements RuleInterface
     }
 
     /**
-     * __invoke
+     * Check if CSRF detected on unsafe authenticated requests
      *
      * @param Request $request PSR7 Server Request
      * @param Route   $route   Route
@@ -123,11 +121,11 @@ class CsrfRule implements RuleInterface
     }
 
     /**
-     * Is Valid
+     * Is CSRF value present and valid?
      *
-     * @param Request $request DESCRIPTION
+     * @param Request $request PSR7 Request
      *
-     * @return mixed
+     * @return bool
      *
      * @access protected
      */
@@ -142,11 +140,11 @@ class CsrfRule implements RuleInterface
     }
 
     /**
-     * Is unsafe
+     * Is the request method something unsafe?
      *
-     * @param Request $request DESCRIPTION
+     * @param Request $request PSR7 Request
      *
-     * @return mixed
+     * @return bool
      *
      * @access protected
      */
@@ -163,11 +161,13 @@ class CsrfRule implements RuleInterface
     /**
      * Is user authenticated?
      *
-     * @param Request $request DESCRIPTION
+     * @param Request $request PSR7 Request
      *
-     * @return mixed
+     * @return bool
      *
      * @access protected
+     *
+     * @throws InvalidArgumentException if auth attribute is no `Auth`
      */
     protected function isAuthenticated(Request $request)
     {

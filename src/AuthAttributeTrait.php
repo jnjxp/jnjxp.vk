@@ -28,7 +28,10 @@
 namespace Jnjxp\Vk;
 
 /**
- * AuthAttributeTrait
+ * Auth Attibute Trait
+ *
+ * Trait for objects which need to know where the auth attribute is stored in
+ * the request.
  *
  * @category Trait
  * @package  Jnjxp\Vk
@@ -38,12 +41,19 @@ namespace Jnjxp\Vk;
  */
 trait AuthAttributeTrait
 {
+    /**
+     * Attribute on request where auth is stored
+     *
+     * @var string
+     *
+     * @access protected
+     */
     protected $authAttribute = 'aura/auth:auth';
 
     /**
      * Set auth attribute
      *
-     * @param string $attr DESCRIPTION
+     * @param string $attr attribute on request where auth is stored
      *
      * @return $this
      *

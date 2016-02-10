@@ -52,7 +52,7 @@ class AuthRule implements RuleInterface
     use AuthAttributeTrait;
 
     /**
-     * __invoke
+     * Check that authentication status is allowed by the route
      *
      * @param Request $request PSR7 Server Request
      * @param Route   $route   Route
@@ -77,13 +77,15 @@ class AuthRule implements RuleInterface
     }
 
     /**
-     * GetAuthStatus
+     * Get authentication status from the request
      *
-     * @param Request $request DESCRIPTION
+     * @param Request $request PSR7 Request
      *
      * @return string
      *
      * @access protected
+     *
+     * @throws InvalidArgumentException if auth attribute is not an `Auth`
      */
     protected function getAuthStatus(Request $request)
     {

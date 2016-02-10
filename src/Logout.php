@@ -85,7 +85,7 @@ class Logout extends AbstractService
      *
      * @access protected
      */
-    protected function logout(Auth $auth, $status = AuthStatus::ANON)
+    protected function doLogout(Auth $auth, $status = AuthStatus::ANON)
     {
         $this->auraLogout->logout($auth, $status);
     }
@@ -108,7 +108,8 @@ class Logout extends AbstractService
 
         try {
 
-            $this->logout($auth, $status);
+            // attept underlying authentication
+            $this->doLogout($auth, $status);
 
             $domainStatus = Status::SUCCESS;
             $signal = 'logout.success';
@@ -116,6 +117,7 @@ class Logout extends AbstractService
             $result = $auth->getStatus();
 
             if ($result !== $status) {
+                // if staus is not what we expect after logout
                 $domainStatus = Status::ERROR;
                 $payload->setOutput(
                     new Exception(

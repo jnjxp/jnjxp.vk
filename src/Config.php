@@ -33,8 +33,8 @@ use Aura\Di\ContainerConfig;
 /**
  * Config
  *
- * @category CategoryName
- * @package  PackageName
+ * @category Config
+ * @package  Jnjxp\Vk
  * @author   Jake Johns <jake@jakejohns.net>
  * @license  http://www.gnu.org/licenses/agpl-3.0.txt AGPL V3
  * @link     https://github.com/jnjxp/jnjxp.vk
@@ -47,9 +47,9 @@ class Config extends ContainerConfig
     /**
      * Define
      *
-     * @param Container $di DESCRIPTION
+     * @param Container $di Aura\Di Container
      *
-     * @return mixed
+     * @return void
      *
      * @access public
      *
@@ -69,9 +69,9 @@ class Config extends ContainerConfig
     /**
      * Define UI
      *
-     * @param Container $di DESCRIPTION
+     * @param Container $di Aura\Di Container
      *
-     * @return mixed
+     * @return void
      *
      * @access protected
      *
@@ -98,11 +98,11 @@ class Config extends ContainerConfig
     }
 
     /**
-     * DefineSession
+     * Define session
      *
-     * @param Container $di DESCRIPTION
+     * @param Container $di Aura\Di Container
      *
-     * @return mixed
+     * @return void
      *
      * @access protected
      *
@@ -134,11 +134,11 @@ class Config extends ContainerConfig
     }
 
     /**
-     * DefineRouteRules
+     * Define route rules
      *
-     * @param Container $di DESCRIPTION
+     * @param Container $di Aura\Di Container
      *
-     * @return mixed
+     * @return void
      *
      * @access protected
      *
@@ -154,9 +154,9 @@ class Config extends ContainerConfig
     /**
      * Define Service
      *
-     * @param Container $di DESCRIPTION
+     * @param Container $di Aura\Di Container
      *
-     * @return mixed
+     * @return void
      *
      * @access protected
      *
@@ -180,9 +180,9 @@ class Config extends ContainerConfig
     /**
      * Define Auth
      *
-     * @param Container $di DESCRIPTION
+     * @param Container $di Aura\Di Container
      *
-     * @return mixed
+     * @return void
      *
      * @access protected
      *
@@ -240,10 +240,9 @@ class Config extends ContainerConfig
     /**
      * Modify
      *
-     * @param Container $di DESCRIPTION
+     * @param Container $di Aura\Di Container
      *
-     * @return mixed
-     * @throws exceptionclass [description]
+     * @return void
      *
      * @access public
      *
