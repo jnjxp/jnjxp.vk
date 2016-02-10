@@ -19,23 +19,23 @@ class LogoutTest extends AbstractServiceTest
             ->method('getStatus')
             ->will($this->returnValue(AuthStatus::ANON));
 
-        $this->event->expects($this->once())
-            ->method('__invoke')
-            ->with(
-                'jnjxp/vk:logout.success',
-                $this->isInstanceOf('Aura\Payload\Payload'),
-                $this->service
-            );
+        $this->events(
+            [
+                $this->callback([$this, 'payloadProcessing']),
+                $this->callback([$this, 'payloadSuccess'])
+            ]
+        );
 
         $payload = $this->service->__invoke($this->auth);
 
-        $this->assertInstanceOf('Aura\Payload\Payload', $payload);
+        $this->assertPayloadStatus(Status::SUCCESS, $payload);
 
-        $this->assertEquals(Status::SUCCESS, $payload->getStatus());
         $this->assertEquals(
             ['auth' => $this->auth],
             $payload->getExtras()
         );
+
+        $this->assertEquals(AuthStatus::ANON, $payload->getOutput());
     }
 
     public function testUnknown()
@@ -48,23 +48,22 @@ class LogoutTest extends AbstractServiceTest
             ->method('getStatus')
             ->will($this->returnValue('foo'));
 
-        $this->event->expects($this->once())
-            ->method('__invoke')
-            ->with(
-                'jnjxp/vk:logout.failure',
-                $this->isInstanceOf('Aura\Payload\Payload'),
-                $this->service
-            );
+        $this->events(
+            [
+                $this->callback([$this, 'payloadProcessing']),
+                $this->callback([$this, 'payloadError'])
+            ]
+        );
 
         $payload = $this->service->__invoke($this->auth);
 
-        $this->assertInstanceOf('Aura\Payload\Payload', $payload);
+        $this->assertPayloadStatus(Status::ERROR, $payload);
 
-        $this->assertEquals(Status::ERROR, $payload->getStatus());
         $this->assertEquals(
             ['auth' => $this->auth],
             $payload->getExtras()
         );
+
         $this->assertInstanceOf('Exception', $payload->getOutput());
     }
 
@@ -77,23 +76,22 @@ class LogoutTest extends AbstractServiceTest
             ->with($this->auth, AuthStatus::ANON)
             ->will($this->throwException($exception));
 
-        $this->event->expects($this->once())
-            ->method('__invoke')
-            ->with(
-                'jnjxp/vk:logout.error',
-                $this->isInstanceOf('Aura\Payload\Payload'),
-                $this->service
-            );
+        $this->events(
+            [
+                $this->callback([$this, 'payloadProcessing']),
+                $this->callback([$this, 'payloadError'])
+            ]
+        );
 
         $payload = $this->service->__invoke($this->auth);
 
-        $this->assertInstanceOf('Aura\Payload\Payload', $payload);
+        $this->assertPayloadStatus(Status::ERROR, $payload);
 
-        $this->assertEquals(Status::ERROR, $payload->getStatus());
         $this->assertEquals(
             ['auth' => $this->auth],
             $payload->getExtras()
         );
+
         $this->assertSame($exception, $payload->getOutput());
     }
 

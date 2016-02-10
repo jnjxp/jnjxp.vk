@@ -102,42 +102,43 @@ class Logout extends AbstractService
      */
     public function __invoke(Auth $auth, $status = AuthStatus::ANON)
     {
-        $payload = clone $this->payload;
-
-        $payload->setExtras(['auth' => $auth]);
+        $this->init($auth, ['status' => $status]);
 
         try {
 
-            // attept underlying authentication
             $this->doLogout($auth, $status);
-
-            $domainStatus = Status::SUCCESS;
-            $signal = 'logout.success';
 
             $result = $auth->getStatus();
 
             if ($result !== $status) {
-                // if staus is not what we expect after logout
-                $domainStatus = Status::ERROR;
-                $payload->setOutput(
-                    new Exception(
-                        sprintf(
-                            'Expected status "%s", got "%s"',
-                            $status, $result
-                        )
-                    )
-                );
-                $signal = 'logout.failure';
+                $msg = sprintf('Expected status "%s", got "%s"', $status, $result);
+                $this->error(new Exception($msg));
+                return $this->payload;
             }
 
-            $payload->setStatus($domainStatus);
-            $this->notify($signal, $payload);
+            $this->success($result);
 
         } catch (Exception $e) {
-            $payload->setStatus(Status::ERROR)->setOutput($e);
-            $this->notify('logout.error', $payload);
+            $this->error($e);
         }
 
-        return $payload;
+        return $this->payload;
+    }
+
+    /**
+     * Success
+     *
+     * @param mixed $status Current auth status after logout
+     *
+     * @return void
+     *
+     * @access protected
+     */
+    protected function success($status)
+    {
+        $this->payload->setStatus(Status::SUCCESS)
+            ->setOutput($status);
+
+        $this->notify();
     }
 }

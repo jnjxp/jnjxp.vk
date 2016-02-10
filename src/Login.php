@@ -57,6 +57,15 @@ class Login extends AbstractService
     protected $auraLogin;
 
     /**
+     * Signal Prefix
+     *
+     * @var string
+     *
+     * @access protected
+     */
+    protected $signal = 'jnjxp/vk:logout';
+
+    /**
      * Create Login service
      *
      * @param Payload   $payload   Domain payload prototype
@@ -86,6 +95,8 @@ class Login extends AbstractService
      * @throws AuraException see Aura\Auth exceptions
      *
      * @access protected
+     *
+     * @see https://github.com/auraphp/Aura.Auth#logging-in
      */
     protected function doLogin(Auth $auth, $username, $password)
     {
@@ -111,50 +122,72 @@ class Login extends AbstractService
      */
     public function __invoke(Auth $auth, $username, $password)
     {
-        $payload = clone $this->payload;
-
-        $payload->setInput(
+        $this->init(
+            $auth,
             [
                 'username' => $username,
                 'password' => (bool) $password
             ]
-        )->setExtras(['auth' => $auth]);
+        );
 
         try {
             $this->doLogin($auth, $username, $password);
 
             if (! $auth->isValid()) {
-                // if not valid after login
-                $payload->setStatus(Status::ERROR)->setOutput(
-                    new Exception('Unknown Authentication Error')
-                );
-                $this->notify('login.error', $payload);
-                return $payload;
+                $error = new Exception('Unknown Authentication Error');
+                $this->error($error);
+                return $this->payload;
             }
 
-            $payload->setStatus(Status::SUCCESS)
-                ->setOutput(
-                    [
-                        'username' => $auth->getUserName(),
-                        'data'     => $auth->getUserData()
-                    ]
-                );
-
-            $this->notify('login.success', $payload);
+            $this->success();
 
         } catch (AuraException $e) {
-            // Aura\Auth throws various exceptions on failure
-            // @see https://github.com/auraphp/Aura.Auth#logging-in
-            $payload->setStatus(Status::FAILURE)->setOutput($e);
-            $this->notify('login.failure', $payload);
-            return $payload;
-
+            $this->failure($e);
         } catch (Exception $e) {
-            $payload->setStatus(Status::ERROR)->setOutput($e);
-            $this->notify('login.error', $payload);
-            return $payload;
+            $this->error($e);
         }
 
-        return $payload;
+        return $this->payload;
+    }
+
+    /**
+     * Success
+     *
+     * @return void
+     *
+     * @access protected
+     */
+    protected function success()
+    {
+        $this->payload->setStatus(Status::SUCCESS)
+            ->setOutput(
+                [
+                    'username' => $this->auth->getUserName(),
+                    'data'     => $this->auth->getUserData()
+                ]
+            );
+
+        $this->notify();
+    }
+
+    /**
+     * Failure
+     *
+     * Aura\Auth throws various exceptions on failure
+     *
+     * @param AuraException $exception Failure exception
+     *
+     * @return void
+     *
+     * @access protected
+     *
+     * @see https://github.com/auraphp/Aura.Auth#logging-in
+     */
+    protected function failure(AuraException $exception)
+    {
+        $this->payload
+            ->setStatus(Status::FAILURE)
+            ->setOutput($exception);
+        $this->notify();
     }
 }

@@ -27,7 +27,12 @@
 
 namespace Jnjxp\Vk;
 
+use Aura\Auth\Auth;
+
 use Aura\Payload_Interface\PayloadInterface as Payload;
+use Aura\Payload_Interface\PayloadStatus as Status;
+
+use Exception;
 
 /**
  * Abstract base service for login and logout
@@ -42,6 +47,16 @@ use Aura\Payload_Interface\PayloadInterface as Payload;
  */
 abstract class AbstractService
 {
+
+    /**
+     * Domain Payload Prototype
+     *
+     * @var Payload
+     *
+     * @access protected
+     */
+    protected $protoPayload;
+
     /**
      * Domain Payload Object
      *
@@ -61,14 +76,13 @@ abstract class AbstractService
     protected $event;
 
     /**
-     * Signal Prefix
+     * Auth object
      *
-     * @var string
+     * @var Auth
      *
      * @access protected
      */
-    protected $signal = 'jnjxp/vk:';
-
+    protected $auth;
 
     /**
      * Create authentication service
@@ -80,26 +94,60 @@ abstract class AbstractService
      */
     public function __construct(Payload $payload, callable $event = null)
     {
-        $this->payload = $payload;
+        $this->protoPayload = $payload;
         $this->event   = $event;
     }
 
     /**
-     * Notify system of authentication event
+     * Initialize new payload and notify system of processing
      *
-     * @param string  $signal  String to pass as event name
-     * @param Payload $payload Current state of domain payload
+     * @param Auth  $auth  Auth Object
+     * @param array $input Input parameters
      *
      * @return void
      *
      * @access protected
      */
-    protected function notify($signal, Payload $payload)
+    protected function init(Auth $auth, array $input = null)
+    {
+        $this->payload = clone $this->protoPayload;
+        $this->payload
+            ->setStatus(Status::PROCESSING)
+            ->setInput($input)
+            ->setExtras(['auth' => $auth]);
+        $this->auth = $auth;
+        $this->notify();
+    }
+
+    /**
+     * Notify system of authentication event
+     *
+     * @return void
+     *
+     * @access protected
+     */
+    protected function notify()
     {
         $event = $this->event;
         if ($event) {
-            $prefix = $this->signal;
-            $event($prefix . $signal, $payload, $this);
+            $event($this, $this->payload);
         }
+    }
+
+    /**
+     * Error
+     *
+     * @param Exception $exception Error exception
+     *
+     * @return void
+     *
+     * @access protected
+     */
+    protected function error(Exception $exception)
+    {
+        $this->payload
+            ->setStatus(Status::ERROR)
+            ->setOutput($exception);
+        $this->notify();
     }
 }
