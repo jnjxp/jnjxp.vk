@@ -121,6 +121,7 @@ class Logout extends AbstractService
             $this->error($e);
         }
 
+        $this->notify();
         return $this->payload;
     }
 
@@ -137,7 +138,5 @@ class Logout extends AbstractService
     {
         $this->payload->setStatus(Status::SUCCESS)
             ->setOutput($status);
-
-        $this->notify();
     }
 }

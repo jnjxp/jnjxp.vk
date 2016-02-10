@@ -148,6 +148,5 @@ abstract class AbstractService
         $this->payload
             ->setStatus(Status::ERROR)
             ->setOutput($exception);
-        $this->notify();
     }
 }

@@ -57,15 +57,6 @@ class Login extends AbstractService
     protected $auraLogin;
 
     /**
-     * Signal Prefix
-     *
-     * @var string
-     *
-     * @access protected
-     */
-    protected $signal = 'jnjxp/vk:logout';
-
-    /**
      * Create Login service
      *
      * @param Payload   $payload   Domain payload prototype
@@ -100,13 +91,8 @@ class Login extends AbstractService
      */
     protected function doLogin(Auth $auth, $username, $password)
     {
-        $this->auraLogin->login(
-            $auth,
-            [
-                'username' => $username,
-                'password' => $password,
-            ]
-        );
+        $input = ['username' => $username, 'password' => $password];
+        $this->auraLogin->login($auth, $input);
     }
 
     /**
@@ -122,13 +108,8 @@ class Login extends AbstractService
      */
     public function __invoke(Auth $auth, $username, $password)
     {
-        $this->init(
-            $auth,
-            [
-                'username' => $username,
-                'password' => (bool) $password
-            ]
-        );
+        $input = ['username' => $username, 'password' => (bool) $password];
+        $this->init($auth, $input);
 
         try {
             $this->doLogin($auth, $username, $password);
@@ -143,6 +124,7 @@ class Login extends AbstractService
             $this->error($e);
         }
 
+        $this->notify();
         return $this->payload;
     }
 
@@ -155,15 +137,10 @@ class Login extends AbstractService
      */
     protected function success()
     {
+        $auth = $this->auth;
+        $out  = ['username' => $auth->getUserName(), 'data' => $auth->getUserData()];
         $this->payload->setStatus(Status::SUCCESS)
-            ->setOutput(
-                [
-                    'username' => $this->auth->getUserName(),
-                    'data'     => $this->auth->getUserData()
-                ]
-            );
-
-        $this->notify();
+            ->setOutput($out);
     }
 
     /**
@@ -199,9 +176,7 @@ class Login extends AbstractService
      */
     protected function failure(AuraException $exception)
     {
-        $this->payload
-            ->setStatus(Status::FAILURE)
+        $this->payload->setStatus(Status::FAILURE)
             ->setOutput($exception);
-        $this->notify();
     }
 }
