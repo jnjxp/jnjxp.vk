@@ -139,8 +139,6 @@ class Login extends AbstractService
 
             $this->success();
 
-        } catch (AuraException $e) {
-            $this->failure($e);
         } catch (Exception $e) {
             $this->error($e);
         }
@@ -166,6 +164,24 @@ class Login extends AbstractService
             );
 
         $this->notify();
+    }
+
+    /**
+     * Error
+     *
+     * @param Exception $exception Error exception
+     *
+     * @return void
+     *
+     * @access protected
+     */
+    protected function error(Exception $exception)
+    {
+        if ($exception instanceof AuraException) {
+            return $this->failure($exception);
+        }
+
+        parent::error($exception);
     }
 
     /**
