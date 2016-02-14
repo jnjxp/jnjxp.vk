@@ -27,7 +27,7 @@
 
 namespace Jnjxp\Vk\Router;
 
-use Jnjxp\Vk\AuthAttributeTrait;
+use Vperyod\AuthHandler\AuthRequestAwareTrait;
 
 use Aura\Auth\Auth;
 use Aura\Auth\Status;
@@ -49,7 +49,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
  */
 class AuthRule implements RuleInterface
 {
-    use AuthAttributeTrait;
+    use AuthRequestAwareTrait;
 
     /**
      * Check that authentication status is allowed by the route
@@ -74,29 +74,5 @@ class AuthRule implements RuleInterface
             return in_array($status, [Status::ANON, Status::EXPIRED, Status::IDLE]);
         }
         return true;
-    }
-
-    /**
-     * Get authentication status from the request
-     *
-     * @param Request $request PSR7 Request
-     *
-     * @return string
-     *
-     * @access protected
-     *
-     * @throws InvalidArgumentException if auth attribute is not an `Auth`
-     */
-    protected function getAuthStatus(Request $request)
-    {
-        $auth = $request->getAttribute($this->authAttribute);
-
-        if (! $auth instanceof Auth) {
-            throw new \InvalidArgumentException(
-                'Auth attribute not available in request'
-            );
-        }
-
-        return $auth->getStatus();
     }
 }

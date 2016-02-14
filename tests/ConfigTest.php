@@ -40,7 +40,6 @@ class ConfigTest extends AbstractContainerConfigTest
     public function provideNewInstance()
     {
         return [
-            ['Jnjxp\Vk\AuthHandler'],
             ['Jnjxp\Vk\Login'],
             ['Jnjxp\Vk\Logout'],
             ['Jnjxp\Vk\Login\Responder'],

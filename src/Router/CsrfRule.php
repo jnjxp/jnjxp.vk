@@ -27,7 +27,7 @@
 
 namespace Jnjxp\Vk\Router;
 
-use Jnjxp\Vk\AuthAttributeTrait;
+use Vperyod\AuthHandler\AuthRequestAwareTrait;
 
 use Aura\Auth\Auth;
 use Aura\Session\CsrfToken;
@@ -50,7 +50,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
  */
 class CsrfRule implements RuleInterface
 {
-    use AuthAttributeTrait;
+    use AuthRequestAwareTrait;
 
     /**
      * CSRF key in request body
@@ -112,7 +112,7 @@ class CsrfRule implements RuleInterface
 
         if ($route->auth
             && $this->isUnsafe($request)
-            && $this->isAuthenticated($request)
+            && $this->isAuthValid($request)
         ) {
             return $this->isValid($request);
         }
@@ -156,29 +156,5 @@ class CsrfRule implements RuleInterface
             || $method == 'PUT'
             || $method == 'PATCH'
             || $method == 'DELETE';
-    }
-
-    /**
-     * Is user authenticated?
-     *
-     * @param Request $request PSR7 Request
-     *
-     * @return bool
-     *
-     * @access protected
-     *
-     * @throws InvalidArgumentException if auth attribute is no `Auth`
-     */
-    protected function isAuthenticated(Request $request)
-    {
-        $auth = $request->getAttribute($this->authAttribute);
-
-        if (! $auth instanceof Auth) {
-            throw new \InvalidArgumentException(
-                'Auth attribute not available in request'
-            );
-        }
-
-        return $auth->isValid();
     }
 }
