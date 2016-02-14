@@ -83,11 +83,22 @@ class Logout extends AbstractService
      *
      * @return void
      *
+     * @throws Exception if result of logout does not match desired status
+     *
      * @access protected
      */
     protected function doLogout(Auth $auth, $status = AuthStatus::ANON)
     {
         $this->auraLogout->logout($auth, $status);
+
+        $result = $auth->getStatus();
+
+        if ($result !== $status) {
+            $msg = sprintf('Expected status "%s", got "%s"', $status, $result);
+            throw new Exception($msg);
+        }
+
+        return $result;
     }
 
     /**
@@ -105,18 +116,8 @@ class Logout extends AbstractService
         $this->init($auth, ['status' => $status]);
 
         try {
-
             $this->doLogout($auth, $status);
-
-            $result = $auth->getStatus();
-
-            if ($result !== $status) {
-                $msg = sprintf('Expected status "%s", got "%s"', $status, $result);
-                throw new Exception($msg);
-            }
-
-            $this->success($result);
-
+            $this->success($status);
         } catch (Exception $e) {
             $this->error($e);
         }

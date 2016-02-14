@@ -83,7 +83,8 @@ class Login extends AbstractService
      *
      * @return void
      *
-     * @throws AuraException see Aura\Auth exceptions
+     * @throws AuraException see Aura\Auth exceptions on Failure
+     * @throws Exception on unspecificed error
      *
      * @access protected
      *
@@ -93,6 +94,10 @@ class Login extends AbstractService
     {
         $input = ['username' => $username, 'password' => $password];
         $this->auraLogin->login($auth, $input);
+
+        if (! $auth->isValid()) {
+            throw new Exception('Unknown Authentication Error');
+        }
     }
 
     /**
@@ -113,13 +118,7 @@ class Login extends AbstractService
 
         try {
             $this->doLogin($auth, $username, $password);
-
-            if (! $auth->isValid()) {
-                throw new Exception('Unknown Authentication Error');
-            }
-
             $this->success();
-
         } catch (Exception $e) {
             $this->error($e);
         }
