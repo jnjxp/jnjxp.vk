@@ -57,12 +57,7 @@ class Config extends ContainerConfig
      */
     public function define(Container $di)
     {
-        $di->values['cookie'] = $_COOKIE;
-
-        $this->defineAuth($di);
         $this->defineService($di);
-        $this->defineRouteRules($di);
-        $this->defineSession($di);
         $this->defineUi($di);
     }
 
@@ -79,76 +74,11 @@ class Config extends ContainerConfig
      */
     protected function defineUi(Container $di)
     {
-        $di->params['Jnjxp\Vk\AuthHandler'] = [
-            'auth' => $di->lazyGet('aura/auth:auth'),
-            'resume' => $di->lazyGet('aura/auth:resume')
-        ];
-
-        if (! $di->has('aura/view:view')) {
-            $di->set('aura/view:factory', $di->lazyNew('Aura\View\ViewFactory'));
-            $di->set(
-                'aura/view:view',
-                $di->lazyGetCall('aura/view:factory', 'newInstance')
-            );
+        if ($di->has('aura/view:view')) {
+            $di->params['Jnjxp\Vk\AbstractResponder'] = [
+                'view' => $di->lazyGet('aura/view:view')
+            ];
         }
-
-        $di->params['Jnjxp\Vk\AbstractResponder'] = [
-            'view' => $di->lazyGet('aura/view:view')
-        ];
-    }
-
-    /**
-     * Define session
-     *
-     * @param Container $di Aura\Di Container
-     *
-     * @return void
-     *
-     * @access protected
-     *
-     * @SuppressWarnings(PHPMD.ShortVariable)
-     */
-    protected function defineSession(Container $di)
-    {
-        $di->set(
-            'aura/session:factory',
-            $di->lazyNew('Aura\Session\SessionFactory')
-        );
-
-        $di->set(
-            'aura/session:session',
-            $di->lazyGetCall(
-                'aura/session:factory',
-                'newInstance',
-                $di->lazyValue('cookie')
-            )
-        );
-
-        $di->set(
-            'aura/session:csrf',
-            $di->lazyGetCall(
-                'aura/session:session',
-                'getCsrfToken'
-            )
-        );
-    }
-
-    /**
-     * Define route rules
-     *
-     * @param Container $di Aura\Di Container
-     *
-     * @return void
-     *
-     * @access protected
-     *
-     * @SuppressWarnings(PHPMD.ShortVariable)
-     */
-    protected function defineRouteRules(Container $di)
-    {
-        $di->params['Jnjxp\Vk\Router\CsrfRule'] = [
-            'token' => $di->lazyGet('aura/session:csrf')
-        ];
     }
 
     /**
@@ -178,66 +108,6 @@ class Config extends ContainerConfig
     }
 
     /**
-     * Define Auth
-     *
-     * @param Container $di Aura\Di Container
-     *
-     * @return void
-     *
-     * @access protected
-     *
-     * @SuppressWarnings(PHPMD.ShortVariable)
-     */
-    protected function defineAuth(Container $di)
-    {
-        $di->params['Aura\Auth\AuthFactory']['cookie'] = $di->lazyValue('cookie');
-
-        $di->set(
-            'aura/auth:factory',
-            $di->lazyNew('Aura\Auth\AuthFactory')
-        );
-
-        if (! $di->has('aura/auth:adapter')) {
-            $di->set(
-                'aura/auth:adapter',
-                $di->lazyNew('Aura\Auth\Adapter\NullAdapter')
-            );
-        }
-
-        $di->set(
-            'aura/auth:auth',
-            $di->lazyGetCall('aura/auth:factory', 'newInstance')
-        );
-
-        $di->set(
-            'aura/auth:login',
-            $di->lazyGetCall(
-                'aura/auth:factory',
-                'newLoginService',
-                $di->lazyGet('aura/auth:adapter')
-            )
-        );
-
-        $di->set(
-            'aura/auth:logout',
-            $di->lazyGetCall(
-                'aura/auth:factory',
-                'newLogoutService',
-                $di->lazyGet('aura/auth:adapter')
-            )
-        );
-
-        $di->set(
-            'aura/auth:resume',
-            $di->lazyGetCall(
-                'aura/auth:factory',
-                'newResumeService',
-                $di->lazyGet('aura/auth:adapter')
-            )
-        );
-    }
-
-    /**
      * Modify
      *
      * @param Container $di Aura\Di Container
@@ -250,11 +120,13 @@ class Config extends ContainerConfig
      */
     public function modify(Container $di)
     {
-        $di->get('aura/view:view')->addData(
-            [
-                'auth' => $di->get('aura/auth:auth'),
-                'csrf' => $di->get('aura/session:csrf')->getValue()
-            ]
-        );
+        if ($di->has('aura/view:view')) {
+            $di->get('aura/view:view')->addData(
+                [
+                    'auth' => $di->get('aura/auth:auth'),
+                    'csrf' => $di->get('aura/session:csrf')->getValue()
+                ]
+            );
+        }
     }
 }
