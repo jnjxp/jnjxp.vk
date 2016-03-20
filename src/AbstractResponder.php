@@ -272,6 +272,7 @@ abstract class AbstractResponder
     {
         $view = $this->view;
         $view->setView($script);
+        $view->addData(['request' => $this->request]);
         $view->addData($data);
         $this->response->getBody()->write($view());
     }

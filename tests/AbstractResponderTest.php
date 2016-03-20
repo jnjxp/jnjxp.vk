@@ -91,13 +91,16 @@ class AbstractResponderTest extends \PHPUnit_Framework_TestCase
             ->method('setView')
             ->with('view');
 
-        $this->view->expects($this->once())
+        $this->view->expects($this->exactly(2))
             ->method('addData')
-            ->with(
+            ->withConsecutive(
+                [ $this->anything() ],
                 [
-                    'failed' => true,
-                    'input' => 'input',
-                    'error' => 'error'
+                    [
+                        'failed' => true,
+                        'input' => 'input',
+                        'error' => 'error'
+                    ]
                 ]
             );
 
@@ -121,9 +124,14 @@ class AbstractResponderTest extends \PHPUnit_Framework_TestCase
             ->method('setView')
             ->with('eview');
 
-        $this->view->expects($this->once())
+        $this->view->expects($this->exactly(2))
             ->method('addData')
-            ->with(['error' => 'error']);
+            ->withConsecutive(
+                [ $this->anything() ],
+                [
+                    ['error' => 'error']
+                ]
+            );
 
         $this->view->expects($this->once())
             ->method('__invoke')
