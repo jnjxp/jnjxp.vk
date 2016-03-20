@@ -18,7 +18,8 @@
         "aura/di": "~3.0",
         "aura/payload": "^3.0",
         "aura/view": "^2.2",
-        "vperyod/auth-handler":"dev-develop"
+        "vperyod/auth-handler":"dev-develop",
+        "vperyod/session-handler":"dev-develop"
     },
     "require-dev":{
         "zendframework/zend-diactoros": "~1.0",

@@ -24,6 +24,10 @@ class CsrfRuleTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->session = $this->getMockBuilder('Aura\Session\Session')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->token = $this->getMockBuilder('Aura\Session\CsrfToken')
             ->disableOriginalConstructor()
             ->getMock();
@@ -54,14 +58,20 @@ class CsrfRuleTest extends \PHPUnit_Framework_TestCase
         $this->requireAuth();
         $this->request = $this->request->withMethod('DELETE')
             ->withAttribute('auth', $this->auth)
+            ->withAttribute('session', $this->session)
             ->withParsedBody(['key' => 'asd']);
 
         $this->rule->setAuthAttribute('auth')
-            ->setCsrfKey('key');
+            ->setCsrfKey('key')
+            ->setSessionAttribute('session');
 
         $this->auth->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
+
+        $this->session->expects($this->once())
+            ->method('getCsrfToken')
+            ->will($this->returnValue($this->token));
 
         $this->token->expects($this->once())
             ->method('isValid')
@@ -78,14 +88,20 @@ class CsrfRuleTest extends \PHPUnit_Framework_TestCase
         $this->requireAuth();
         $this->request = $this->request->withMethod('DELETE')
             ->withAttribute('auth', $this->auth)
+            ->withAttribute('session', $this->session)
             ->withParsedBody(['key' => 'asd']);
 
         $this->rule->setAuthAttribute('auth')
+            ->setSessionAttribute('session')
             ->setCsrfKey('key');
 
         $this->auth->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
+
+        $this->session->expects($this->once())
+            ->method('getCsrfToken')
+            ->will($this->returnValue($this->token));
 
         $this->token->expects($this->once())
             ->method('isValid')
