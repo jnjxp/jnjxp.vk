@@ -21,7 +21,10 @@
         "vperyod/auth-handler":"dev-develop"
     },
     "require-dev":{
-        "zendframework/zend-diactoros": "~1.0"
+        "zendframework/zend-diactoros": "~1.0",
+        "fusible/view-provider" : "dev-develop",
+        "fusible/session-provider" : "dev-develop",
+        "fusible/auth-provider" : "dev-develop"
     },
     "autoload": {
         "psr-4": {

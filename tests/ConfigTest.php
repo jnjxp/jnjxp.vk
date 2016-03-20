@@ -16,7 +16,10 @@ class ConfigTest extends AbstractContainerConfigTest
     protected function getConfigClasses()
     {
         return [
-            'Jnjxp\Vk\Config'
+            'Fusible\SessionProvider\Config',
+            'Fusible\AuthProvider\Config',
+            'Fusible\ViewProvider\Config',
+            'Jnjxp\Vk\Config',
         ];
     }
 
