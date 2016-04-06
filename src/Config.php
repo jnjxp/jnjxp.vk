@@ -123,8 +123,7 @@ class Config extends ContainerConfig
         if ($di->has('aura/view:view')) {
             $di->get('aura/view:view')->addData(
                 [
-                    'auth' => $di->get('aura/auth:auth'),
-                    'csrf' => $di->get('aura/session:csrf')->getValue()
+                    'auth' => $di->get('aura/auth:auth')
                 ]
             );
         }
