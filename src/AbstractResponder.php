@@ -82,7 +82,7 @@ abstract class AbstractResponder
      *
      * @access protected
      */
-    protected $errorViewScript = 'jnjxp/vk/error';
+    protected $errorViewScript = 'auth/error';
 
     /**
      * Messenger attribute

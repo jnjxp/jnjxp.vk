@@ -49,7 +49,7 @@ class Responder extends AbstractResponder
      *
      * @access protected
      */
-    protected $viewScript = 'jnjxp/vk/login';
+    protected $viewScript = 'auth/login';
 
     /**
      * Success message
