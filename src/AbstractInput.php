@@ -29,6 +29,8 @@ namespace Jnjxp\Vk;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 
+use Vperyod\AuthHandler\AuthRequestAwareTrait;
+
 /**
  * Get login input
  *
@@ -40,19 +42,5 @@ use Psr\Http\Message\ServerRequestInterface as Request;
  */
 abstract class AbstractInput
 {
-    use AuthAttributeTrait;
-
-    /**
-     * GetAuth
-     *
-     * @param Request $request DESCRIPTION
-     *
-     * @return Aura\Auth\Auth
-     *
-     * @access protected
-     */
-    protected function getAuth(Request $request)
-    {
-        return $request->getAttribute($this->authAttribute);
-    }
+    use AuthRequestAwareTrait;
 }

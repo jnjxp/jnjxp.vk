@@ -16,7 +16,10 @@ class ConfigTest extends AbstractContainerConfigTest
     protected function getConfigClasses()
     {
         return [
-            'Jnjxp\Vk\Config'
+            'Fusible\SessionProvider\Config',
+            'Fusible\AuthProvider\Config',
+            'Fusible\ViewProvider\Config',
+            'Jnjxp\Vk\Config',
         ];
     }
 
@@ -40,7 +43,6 @@ class ConfigTest extends AbstractContainerConfigTest
     public function provideNewInstance()
     {
         return [
-            ['Jnjxp\Vk\AuthHandler'],
             ['Jnjxp\Vk\Login'],
             ['Jnjxp\Vk\Logout'],
             ['Jnjxp\Vk\Login\Responder'],

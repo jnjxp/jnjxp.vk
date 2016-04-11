@@ -9,8 +9,12 @@ class InputTest extends \PHPUnit_Framework_TestCase
 {
     public function testLogin()
     {
+        $auth = $this->getMockBuilder('Aura\Auth\Auth')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $request = ServerRequestFactory::fromGlobals();
-        $request = $request->withAttribute('foo', 'foo')
+        $request = $request->withAttribute('foo', $auth)
             ->withParsedBody(
             [
                 'username' => 'un',
@@ -23,7 +27,7 @@ class InputTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             [
-                'auth' => 'foo',
+                'auth' => $auth,
                 'username' => 'un',
                 'password' => 'pw'
             ],
@@ -33,15 +37,19 @@ class InputTest extends \PHPUnit_Framework_TestCase
 
     public function testLogout()
     {
+        $auth = $this->getMockBuilder('Aura\Auth\Auth')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $request = ServerRequestFactory::fromGlobals();
         $request = $request->withAttribute(
-            'aura/auth:auth', 'foo'
+            'aura/auth:auth', $auth
         );
 
         $input = new \Jnjxp\Vk\Logout\Input();
 
         $this->assertEquals(
-            ['auth' => 'foo'],
+            ['auth' => $auth],
             $input($request)
         );
     }
