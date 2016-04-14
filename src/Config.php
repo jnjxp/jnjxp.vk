@@ -1,27 +1,19 @@
 <?php
 /**
- * Voight-Kampff - Authentication
+ * Voight-Kampff Authentication
  *
  * PHP version 5
  *
- * This program is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Copyright (C) 2016 Jake Johns
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE file for details.
  *
  * @category  Config
  * @package   Jnjxp\Vk
  * @author    Jake Johns <jake@jakejohns.net>
  * @copyright 2016 Jake Johns
- * @license   http://www.gnu.org/licenses/agpl-3.0.txt AGPL V3
+ * @license   http://jnj.mit-license.org/2016 MIT License
  * @link      https://github.com/jnjxp/jnjxp.vk
  */
 
@@ -30,19 +22,71 @@ namespace Jnjxp\Vk;
 use Aura\Di\Container;
 use Aura\Di\ContainerConfig;
 
+use Aura\Payload\Payload;
+
+use Jnjxp\Vk\Router\Config as RouteConfig;
+use Jnjxp\Vk\Responder\Config as ResponderConfig;
+
 /**
  * Config
  *
  * @category Config
  * @package  Jnjxp\Vk
  * @author   Jake Johns <jake@jakejohns.net>
- * @license  http://www.gnu.org/licenses/agpl-3.0.txt AGPL V3
+ * @license  http://jnj.mit-license.org/2016 MIT License
  * @link     https://github.com/jnjxp/jnjxp.vk
  *
  * @see ContainerConfig
  */
 class Config extends ContainerConfig
 {
+    /**
+     * Should we configure routes?
+     *
+     * @var bool
+     *
+     * @access protected
+     */
+    protected $route = true;
+
+    /**
+     * Should we configure responders?
+     *
+     * @var mixed
+     *
+     * @access protected
+     */
+    protected $responders = true;
+
+    /**
+     * Should we configure default routes?
+     *
+     * @param bool $bool false to stop
+     *
+     * @return mixed
+     *
+     * @access public
+     */
+    public function setRoute($bool)
+    {
+        $this->route = (bool) $bool;
+        return $this;
+    }
+
+    /**
+     * Should we configure responders?
+     *
+     * @param bool $bool false to stop
+     *
+     * @return $this
+     *
+     * @access public
+     */
+    public function setResponders($bool)
+    {
+        $this->responders = (bool) $bool;
+        return $this;
+    }
 
     /**
      * Define
@@ -58,26 +102,10 @@ class Config extends ContainerConfig
     public function define(Container $di)
     {
         $this->defineService($di);
-        $this->defineUi($di);
-    }
 
-    /**
-     * Define UI
-     *
-     * @param Container $di Aura\Di Container
-     *
-     * @return void
-     *
-     * @access protected
-     *
-     * @SuppressWarnings(PHPMD.ShortVariable)
-     */
-    protected function defineUi(Container $di)
-    {
-        if ($di->has('aura/view:view')) {
-            $di->params['Jnjxp\Vk\AbstractResponder'] = [
-                'view' => $di->lazyGet('aura/view:view')
-            ];
+        if ($this->responders) {
+            $config = new ResponderConfig;
+            $config->define($di);
         }
     }
 
@@ -94,25 +122,26 @@ class Config extends ContainerConfig
      */
     protected function defineService(Container $di)
     {
-        $di->params['Jnjxp\Vk\AbstractService'] = [
-            'payload' => $di->lazyNew('Aura\Payload\Payload')
+        $di->params[AbstractService::class] = [
+            'payload' => $di->lazyNew(Payload::class)
         ];
 
-        $di->params['Jnjxp\Vk\Login'] = [
+        $di->params[Login::class] = [
             'auraLogin' => $di->lazyGet('aura/auth:login')
         ];
 
-        $di->params['Jnjxp\Vk\Logout'] = [
+        $di->params[Logout::class] = [
             'auraLogout' => $di->lazyGet('aura/auth:logout')
         ];
     }
 
     /**
-     * Modify
+     * Modify container
      *
-     * @param Container $di Aura\Di Container
+     * @param Container $di DESCRIPTION
      *
-     * @return void
+     * @return mixed
+     * @throws exceptionclass [description]
      *
      * @access public
      *
@@ -120,12 +149,9 @@ class Config extends ContainerConfig
      */
     public function modify(Container $di)
     {
-        if ($di->has('aura/view:view')) {
-            $di->get('aura/view:view')->addData(
-                [
-                    'auth' => $di->get('aura/auth:auth')
-                ]
-            );
+        if ($this->route && $di->has('radar/adr:adr')) {
+            $config = $di->newInstance(RouteConfig::class);
+            $config->adr($di->get('radar/adr:adr'));
         }
     }
 }

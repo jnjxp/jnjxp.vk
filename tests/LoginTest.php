@@ -43,7 +43,7 @@ class LoginTest extends AbstractServiceTest
 
         $payload = $this->service->__invoke($this->auth, 'un', 'pw');
 
-        $this->assertPayloadStatus(Status::SUCCESS, $payload);
+        $this->assertPayloadStatus(Status::AUTHENTICATED, $payload);
 
         $this->assertEquals(
             [

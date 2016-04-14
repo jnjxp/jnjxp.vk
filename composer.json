@@ -11,21 +11,16 @@
     ],
     "require": {
         "psr/http-message": "^1.0",
-        "aura/payload-interface": "^3.0",
-        "aura/session": "^2.0",
-        "aura/auth": "^2.0",
-        "aura/router": "^3.0",
-        "aura/di": "~3.0",
         "aura/payload": "^3.0",
-        "aura/view": "^2.2",
-        "vperyod/auth-handler":"dev-develop",
-        "vperyod/session-handler":"dev-develop"
+        "aura/auth": "^2.0",
+        "vperyod/auth-handler":"dev-develop"
     },
     "require-dev":{
         "zendframework/zend-diactoros": "~1.0",
-        "fusible/view-provider" : "dev-develop",
-        "fusible/session-provider" : "dev-develop",
-        "fusible/auth-provider" : "dev-develop"
+        "radar/adr":"^1.0",
+        "fusible/auth-provider" : "dev-develop",
+        "vperyod/session-handler":"dev-develop",
+        "vperyod/accept-handler":"dev-develop"
     },
     "autoload": {
         "psr-4": {
@@ -35,11 +30,13 @@
     "autoload-dev": {
         "psr-4": {
             "Jnjxp\\Vk\\":"tests/",
-            "Aura\\Di\\": "vendor/aura/di/tests/"
+            "Aura\\Di\\": "vendor/aura/di/tests/",
+            "Vperyod\\SessionHandler\\": "vendor/vperyod/session-handler/tests/"
         }
     },
     "suggest": {
-        "jnjxp/molniya": "For flash messages"
+        "vperyod/session-handler":"for responders",
+        "vperyod/accept-handler":"for responders"
     },
     "minimum-stability": "dev"
 }

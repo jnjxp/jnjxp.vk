@@ -26,7 +26,7 @@ class AuthRuleTest extends \PHPUnit_Framework_TestCase
 
         $this->request = ServerRequestFactory::fromGlobals();
 
-        $this->rule = new AuthRule();
+        $this->rule = new AuthRouteRule();
     }
 
     public function testUnprotected()

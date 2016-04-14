@@ -7,6 +7,14 @@ use Zend\Diactoros\ServerRequestFactory;
 
 class InputTest extends \PHPUnit_Framework_TestCase
 {
+
+    protected $input;
+
+    public function setUp()
+    {
+        $this->input = new Input; 
+    }
+
     public function testLogin()
     {
         $auth = $this->getMockBuilder('Aura\Auth\Auth')
@@ -22,8 +30,7 @@ class InputTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $input = new \Jnjxp\Vk\Login\Input();
-        $input->setAuthAttribute('foo');
+        $this->input->setAuthAttribute('foo');
 
         $this->assertEquals(
             [
@@ -31,7 +38,7 @@ class InputTest extends \PHPUnit_Framework_TestCase
                 'username' => 'un',
                 'password' => 'pw'
             ],
-            $input($request)
+            $this->input->login($request)
         );
     }
 
@@ -46,11 +53,9 @@ class InputTest extends \PHPUnit_Framework_TestCase
             'aura/auth:auth', $auth
         );
 
-        $input = new \Jnjxp\Vk\Logout\Input();
-
         $this->assertEquals(
             ['auth' => $auth],
-            $input($request)
+            $this->input->logout($request)
         );
     }
 }
