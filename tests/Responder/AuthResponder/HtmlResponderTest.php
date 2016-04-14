@@ -192,5 +192,24 @@ class HtmlResponderTest extends AbstractResponderTest
         $this->assertEquals(302, $response->getStatusCode());
         $this->assertEquals($login ?: '/login', $response->getHeaderLine('Location'));
     }
+
+    public function testError()
+    {
+        $exception = new \Exception('Foo');
+        $this->payload->setOutput($exception)
+            ->setStatus('error');
+
+        $response = $this->responder->__invoke(
+            $this->request,
+            $this->response,
+            $this->payload
+        );
+
+        $this->assertEquals(500, $response->getStatusCode());
+        $this->assertEquals(
+            'Exception: Foo',
+            (string) $response->getBody()
+        );
+    }
 }
 

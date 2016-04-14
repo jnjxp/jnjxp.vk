@@ -37,6 +37,15 @@ class JsonResponder extends AbstractResponder
     use JsonResponderTrait;
 
     /**
+     * PSR7 Response
+     *
+     * @var Response
+     *
+     * @access protected
+     */
+    protected $response;
+
+    /**
      * Login Success
      *
      * @return void
@@ -73,5 +82,26 @@ class JsonResponder extends AbstractResponder
     {
         $this->response = $this->response->withStatus(401);
         $this->jsonBody(['message' => $this->loginFail]);
+    }
+
+    /**
+     * Error
+     *
+     * @return void
+     *
+     * @access protected
+     */
+    protected function error()
+    {
+        $exception = $this->payload->getOutput();
+
+        $msg = sprintf(
+            '%s: %s',
+            get_class($exception),
+            $exception->getMessage()
+        );
+
+        $this->response = $this->response->withStatus(500);
+        $this->jsonBody(['message' => $msg]);
     }
 }

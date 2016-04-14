@@ -51,25 +51,11 @@ class HtmlResponderTest extends AbstractResponderTest
 
     public function testRedirect()
     {
-        $response = $this->getMockBuilder('Psr\Http\Message\ResponseInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $response->expects($this->once())
-            ->method('withStatus')
-            ->with($this->equalTo(302))
-            ->will($this->returnValue($response));
-
-        $response->expects($this->once())
-            ->method('withHeader')
-            ->with(
-                $this->equalTo('Location'),
-                $this->equalTo('foo')
-            );
-
-        $this->responder->response = $response;
-
+        $this->responder->response = $this->response;
         $this->responder->redirect('foo');
+        $result = $this->responder->response;
+        $this->assertEquals(302, $result->getStatusCode());
+        $this->assertEquals('foo', $result->getHeaderLine('Location'));
     }
 
     public function rememberProvider()
@@ -156,26 +142,6 @@ class HtmlResponderTest extends AbstractResponderTest
         $this->assertEquals(
             $expect,
             $this->responder->getIntent()
-        );
-    }
-
-    public function testError()
-    {
-        $exception = new \Exception('Foo');
-        $this->payload->setOutput($exception);
-        $this->responder->payload = $this->payload;
-        $this->responder->response = $this->response;
-
-        $this->responder->error();
-
-        $result = $this->responder->response;
-
-        $this->assertEquals(500, $result->getStatusCode());
-        $this->assertEquals('text/plain', $result->getHeaderLine('Content-Type'));
-
-        $this->assertEquals(
-            'Exception: Foo',
-            (string) $result->getBody()
         );
     }
 }

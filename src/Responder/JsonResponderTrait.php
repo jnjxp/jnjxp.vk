@@ -19,6 +19,8 @@
 
 namespace Jnjxp\Vk\Responder;
 
+use Psr\Http\Message\ResponseInterface as Response;
+
 /**
  * JsonResponderTrait
  *
@@ -44,32 +46,31 @@ trait JsonResponderTrait
     protected function jsonBody($data)
     {
         if (isset($data)) {
-            $this->response = $this->response
+            $response = $this->getResponse()
                 ->withHeader('Content-Type', 'application/json');
-            $this->response->getBody()->write(json_encode($data));
+            $response->getBody()->write(json_encode($data));
+            $this->setResponse($response);
         }
     }
 
     /**
-     * Error
+     * Get Response
      *
-     * @return void
+     * @return Response
      *
      * @access protected
      */
-    protected function error()
-    {
-        $this->response = $this->response->withStatus(500);
+    abstract protected function getResponse();
 
-        $exception = $this->payload->getOutput();
-
-        $error = sprintf(
-            '%s: %s',
-            get_class($exception),
-            $exception->getMessage()
-        );
-
-        $this->jsonBody(['error' => $error]);
-    }
+    /**
+     * Set Response
+     *
+     * @param Response $response Response
+     *
+     * @return $this
+     *
+     * @access protected
+     */
+    abstract protected function setResponse(Response $response);
 }
 

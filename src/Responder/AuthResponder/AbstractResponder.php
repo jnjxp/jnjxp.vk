@@ -38,6 +38,34 @@ abstract class AbstractResponder
 {
 
     /**
+     * PSR7 Request
+     *
+     * @var Request
+     *
+     * @access protected
+     */
+    protected $request;
+
+    /**
+     * PSR7 Response
+     *
+     * @var Response
+     *
+     * @access protected
+     */
+    protected $response;
+
+    /**
+     * Domain Payload
+     *
+     * @var Payload
+     *
+     * @access protected
+     */
+    protected $payload;
+
+
+    /**
      * Login succes message
      *
      * @var string
@@ -143,6 +171,45 @@ abstract class AbstractResponder
     }
 
     /**
+     * Get Request
+     *
+     * @return Request
+     *
+     * @access protected
+     */
+    protected function getRequest()
+    {
+        return $this->request;
+    }
+
+    /**
+     * Get Response
+     *
+     * @return Response
+     *
+     * @access protected
+     */
+    protected function getResponse()
+    {
+        return $this->response;
+    }
+
+    /**
+     * Set Response
+     *
+     * @param Response $response Response
+     *
+     * @return $this
+     *
+     * @access protected
+     */
+    protected function setResponse(Response $response)
+    {
+        $this->response = $response;
+        return $this;
+    }
+
+    /**
      * Login Success
      *
      * @return void
@@ -168,4 +235,13 @@ abstract class AbstractResponder
      * @access void
      */
     abstract protected function failure();
+
+    /**
+     * Error
+     *
+     * @return mixed
+     *
+     * @access protected
+     */
+    abstract protected function error();
 }

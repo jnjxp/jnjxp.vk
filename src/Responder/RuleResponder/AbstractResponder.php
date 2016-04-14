@@ -76,7 +76,7 @@ abstract class AbstractResponder
     /**
      * Failed Route
      *
-     * @var Aura\Router\Route
+     * @var Route
      *
      * @access protected
      */
@@ -147,6 +147,45 @@ abstract class AbstractResponder
     public function setRequireAnon($message)
     {
         $this->requireAnon = $message;
+        return $this;
+    }
+
+    /**
+     * Get Request
+     *
+     * @return Request
+     *
+     * @access protected
+     */
+    protected function getRequest()
+    {
+        return $this->request;
+    }
+
+    /**
+     * Get Response
+     *
+     * @return Response
+     *
+     * @access protected
+     */
+    protected function getResponse()
+    {
+        return $this->response;
+    }
+
+    /**
+     * Set Response
+     *
+     * @param Response $response Response
+     *
+     * @return $this
+     *
+     * @access protected
+     */
+    protected function setResponse(Response $response)
+    {
+        $this->response = $response;
         return $this;
     }
 

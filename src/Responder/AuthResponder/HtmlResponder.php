@@ -75,4 +75,28 @@ class HtmlResponder extends AbstractResponder
         $this->messages()->warning($this->loginFail);
         $this->redirect($this->login);
     }
+
+    /**
+     * Error
+     *
+     * @return void
+     *
+     * @access protected
+     */
+    protected function error()
+    {
+        $this->response = $this->response
+            ->withStatus(500)
+            ->withHeader('Content-Type', 'text/plain');
+
+        $exception = $this->payload->getOutput();
+
+        $this->response->getBody()->write(
+            sprintf(
+                '%s: %s',
+                get_class($exception),
+                $exception->getMessage()
+            )
+        );
+    }
 }

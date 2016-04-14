@@ -21,6 +21,10 @@ namespace Jnjxp\Vk\Responder;
 
 use Vperyod\SessionHandler\SessionRequestAwareTrait;
 
+use Aura\Payload_Interface\PayloadInterface as Payload;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
+
 /**
  * HtmlResponderTrait
  *
@@ -135,7 +139,7 @@ trait HtmlResponderTrait
      */
     protected function messages()
     {
-        return $this->newMessenger($this->request);
+        return $this->newMessenger($this->getRequest());
     }
 
     /**
@@ -147,7 +151,7 @@ trait HtmlResponderTrait
      */
     protected function intent()
     {
-        return $this->getSession($this->request)
+        return $this->getSession($this->getRequest())
             ->getSegment($this->intent);
     }
 
@@ -162,9 +166,10 @@ trait HtmlResponderTrait
      */
     protected function redirect($uri)
     {
-        $this->response = $this->response
+        $response = $this->getResponse()
             ->withStatus(302)
             ->withHeader('Location', $uri);
+        $this->setResponse($response);
     }
 
     /**
@@ -176,7 +181,7 @@ trait HtmlResponderTrait
      */
     protected function rememberIntent()
     {
-        $request = $this->request;
+        $request = $this->getRequest();
         if ('GET' == $request->getMethod()) {
             $url = (string) $request->getUri();
             $intent = $this->intent();
@@ -209,26 +214,32 @@ trait HtmlResponderTrait
     }
 
     /**
-     * Error
+     * Get Request
      *
-     * @return void
+     * @return Request
      *
      * @access protected
      */
-    protected function error()
-    {
-        $this->response = $this->response->withStatus(500)
-            ->withHeader('Content-Type', 'text/plain');
+    abstract protected function getRequest();
 
-        $exception = $this->payload->getOutput();
+    /**
+     * Get Response
+     *
+     * @return Response
+     *
+     * @access protected
+     */
+    abstract protected function getResponse();
 
-        $this->response->getBody()->write(
-            sprintf(
-                '%s: %s',
-                get_class($exception),
-                $exception->getMessage()
-            )
-        );
-    }
+    /**
+     * Set Response
+     *
+     * @param Response $response Response
+     *
+     * @return $this
+     *
+     * @access protected
+     */
+    abstract protected function setResponse(Response $response);
 }
 

@@ -94,4 +94,25 @@ class JsonResponderTest extends AbstractResponderTest
         $this->assertEquals(401, $response->getStatusCode());
         $this->assertEquals($body, (string) $response->getBody());
     }
+
+    public function testError()
+    {
+        $exception = new \Exception('Foo');
+        $this->payload->setOutput($exception)
+            ->setStatus('error');
+
+        $response = $this->responder->__invoke(
+            $this->request,
+            $this->response,
+            $this->payload
+        );
+
+        $msg = 'Exception: Foo';
+        $body = json_encode(['message' => $msg]);
+        $this->assertEquals(500, $response->getStatusCode());
+        $this->assertEquals(
+            $body,
+            (string) $response->getBody()
+        );
+    }
 }
