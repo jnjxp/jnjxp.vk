@@ -113,15 +113,17 @@ class Config
      */
     public function attach(Map $map)
     {
-        $map->get('Login', '/login');
-        $map->get('Logout', '/logout');
+        $map->get('Login', '/login')->auth(false);
+        $map->get('Logout', '/logout')->auth(true);
 
         $map->responder(Responder::class);
 
         $map->post('DoLogin', '/login', Login::class)
-            ->input([Input::class, 'login']);
+            ->input([Input::class, 'login'])
+            ->auth(false);
 
         $map->post('DoLogout', '/logout', Logout::class)
-            ->input([Input::class, 'logout']);
+            ->input([Input::class, 'logout'])
+            ->auth(true);
     }
 }
