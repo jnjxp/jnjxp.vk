@@ -34,19 +34,17 @@ class LoginTest extends AbstractServiceTest
             ->method('getUserData')
             ->will($this->returnValue('data'));
 
-        $this->event->expects($this->once())
-            ->method('__invoke')
-            ->with(
-                'jnjxp/vk:login.success',
-                $this->isInstanceOf('Aura\Payload\Payload'),
-                $this->service
-            );
+        $this->events(
+            [
+                $this->callback([$this, 'payloadProcessing']),
+                $this->callback([$this, 'payloadSuccess'])
+            ]
+        );
 
         $payload = $this->service->__invoke($this->auth, 'un', 'pw');
 
-        $this->assertInstanceOf('Aura\Payload\Payload', $payload);
+        $this->assertPayloadStatus(Status::AUTHENTICATED, $payload);
 
-        $this->assertEquals(Status::SUCCESS, $payload->getStatus());
         $this->assertEquals(
             [
                 'username' => 'un',
@@ -54,6 +52,7 @@ class LoginTest extends AbstractServiceTest
             ],
             $payload->getInput()
         );
+
         $this->assertEquals(
             [
                 'username' => 'un',
@@ -61,6 +60,7 @@ class LoginTest extends AbstractServiceTest
             ],
             $payload->getOutput()
         );
+
         $this->assertEquals(
             ['auth' => $this->auth],
             $payload->getExtras()
@@ -85,19 +85,17 @@ class LoginTest extends AbstractServiceTest
             ->method('isValid')
             ->will($this->returnValue(false));
 
-        $this->event->expects($this->once())
-            ->method('__invoke')
-            ->with(
-                'jnjxp/vk:login.error',
-                $this->isInstanceOf('Aura\Payload\Payload'),
-                $this->service
-            );
+        $this->events(
+            [
+                $this->callback([$this, 'payloadProcessing']),
+                $this->callback([$this, 'payloadError'])
+            ]
+        );
 
         $payload = $this->service->__invoke($this->auth, 'un', 'pw');
 
-        $this->assertInstanceOf('Aura\Payload\Payload', $payload);
+        $this->assertPayloadStatus(Status::ERROR, $payload);
 
-        $this->assertEquals(Status::ERROR, $payload->getStatus());
         $this->assertEquals(
             [
                 'username' => 'un',
@@ -131,19 +129,18 @@ class LoginTest extends AbstractServiceTest
                 )
             )->will($this->throwException($exception));
 
-        $this->event->expects($this->once())
-            ->method('__invoke')
-            ->with(
-                'jnjxp/vk:login.failure',
-                $this->isInstanceOf('Aura\Payload\Payload'),
-                $this->service
-            );
+
+        $this->events(
+            [
+                $this->callback([$this, 'payloadProcessing']),
+                $this->callback([$this, 'payloadFailure'])
+            ]
+        );
 
         $payload = $this->service->__invoke($this->auth, 'un', 'pw');
 
-        $this->assertInstanceOf('Aura\Payload\Payload', $payload);
+        $this->assertPayloadStatus(Status::FAILURE, $payload);
 
-        $this->assertEquals(Status::FAILURE, $payload->getStatus());
         $this->assertEquals(
             [
                 'username' => 'un',
@@ -174,19 +171,18 @@ class LoginTest extends AbstractServiceTest
                 )
             )->will($this->throwException($exception));
 
-        $this->event->expects($this->once())
-            ->method('__invoke')
-            ->with(
-                'jnjxp/vk:login.error',
-                $this->isInstanceOf('Aura\Payload\Payload'),
-                $this->service
-            );
+
+        $this->events(
+            [
+                $this->callback([$this, 'payloadProcessing']),
+                $this->callback([$this, 'payloadError'])
+            ]
+        );
 
         $payload = $this->service->__invoke($this->auth, 'un', 'pw');
 
-        $this->assertInstanceOf('Aura\Payload\Payload', $payload);
+        $this->assertPayloadStatus(Status::ERROR, $payload);
 
-        $this->assertEquals(Status::ERROR, $payload->getStatus());
         $this->assertEquals(
             [
                 'username' => 'un',
@@ -194,7 +190,9 @@ class LoginTest extends AbstractServiceTest
             ],
             $payload->getInput()
         );
+
         $this->assertSame($exception, $payload->getOutput());
+
         $this->assertEquals(
             ['auth' => $this->auth],
             $payload->getExtras()

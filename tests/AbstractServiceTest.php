@@ -4,6 +4,7 @@
 namespace Jnjxp\Vk;
 
 use Aura\Payload\Payload;
+use Aura\Payload_Interface\PayloadStatus as Status;
 
 abstract class AbstractServiceTest extends \PHPUnit_Framework_TestCase
 {
@@ -59,4 +60,45 @@ abstract class AbstractServiceTest extends \PHPUnit_Framework_TestCase
             break;
         }
     }
+
+    protected function assertPayloadStatus($expect, $payload)
+    {
+        $this->assertInstanceOf('Aura\Payload\Payload', $payload);
+        $this->assertEquals($expect, $payload->getStatus());
+        return true;
+    }
+
+    public function payloadProcessing($payload)
+    {
+        $this->assertPayloadStatus(Status::PROCESSING, $payload);
+    }
+
+    public function payloadSuccess($payload)
+    {
+        $this->assertPayloadStatus(Status::SUCCESS, $payload);
+    }
+
+    public function payloadFailure($payload)
+    {
+        $this->assertPayloadStatus(Status::FAILURE, $payload);
+    }
+
+    public function payloadError($payload)
+    {
+        $this->assertPayloadStatus(Status::Error, $payload);
+    }
+
+    protected function events(array $events)
+    {
+        $params = [];
+        foreach ($events as $payload) {
+            $params = [$this->service, $payload];
+        }
+
+        $method = $this->event->expects($this->exactly(count($events)))
+            ->method('__invoke');
+
+        call_user_func_array([$method, 'withConsecutive'], $params);
+    }
+
 }

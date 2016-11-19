@@ -7,10 +7,22 @@ use Zend\Diactoros\ServerRequestFactory;
 
 class InputTest extends \PHPUnit_Framework_TestCase
 {
+
+    protected $input;
+
+    public function setUp()
+    {
+        $this->input = new Input; 
+    }
+
     public function testLogin()
     {
+        $auth = $this->getMockBuilder('Aura\Auth\Auth')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $request = ServerRequestFactory::fromGlobals();
-        $request = $request->withAttribute('foo', 'foo')
+        $request = $request->withAttribute('foo', $auth)
             ->withParsedBody(
             [
                 'username' => 'un',
@@ -18,31 +30,32 @@ class InputTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $input = new \Jnjxp\Vk\Login\Input();
-        $input->setAuthAttribute('foo');
+        $this->input->setAuthAttribute('foo');
 
         $this->assertEquals(
             [
-                'auth' => 'foo',
+                'auth' => $auth,
                 'username' => 'un',
                 'password' => 'pw'
             ],
-            $input($request)
+            $this->input->login($request)
         );
     }
 
     public function testLogout()
     {
+        $auth = $this->getMockBuilder('Aura\Auth\Auth')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $request = ServerRequestFactory::fromGlobals();
         $request = $request->withAttribute(
-            'aura/auth:auth', 'foo'
+            'aura/auth:auth', $auth
         );
 
-        $input = new \Jnjxp\Vk\Logout\Input();
-
         $this->assertEquals(
-            ['auth' => 'foo'],
-            $input($request)
+            ['auth' => $auth],
+            $this->input->logout($request)
         );
     }
 }

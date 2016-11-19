@@ -4,24 +4,16 @@
  *
  * PHP version 5
  *
- * This program is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Copyright (C) 2016 Jake Johns
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE file for details.
  *
  * @category  Service
  * @package   Jnjxp\Vk
  * @author    Jake Johns <jake@jakejohns.net>
- * @copyright 2015 Jake Johns
- * @license   http://www.gnu.org/licenses/agpl-3.0.txt AGPL V3
+ * @copyright 2016 Jake Johns
+ * @license   http://jnj.mit-license.org/2016 MIT License
  * @link      https://github.com/jnjxp/jnjxp.vk
  */
 
@@ -43,7 +35,7 @@ use Exception;
  * @category Service
  * @package  Jnjxp\Vk
  * @author   Jake Johns <jake@jakejohns.net>
- * @license  http://www.gnu.org/licenses/agpl-3.0.txt AGPL V3
+ * @license  http://jnj.mit-license.org/2016 MIT License
  * @link     https://github.com/jnjxp/jnjxp.vk
  */
 class Logout extends AbstractService
@@ -83,11 +75,22 @@ class Logout extends AbstractService
      *
      * @return void
      *
+     * @throws Exception if result of logout does not match desired status
+     *
      * @access protected
      */
-    protected function logout(Auth $auth, $status = AuthStatus::ANON)
+    protected function doLogout(Auth $auth, $status = AuthStatus::ANON)
     {
         $this->auraLogout->logout($auth, $status);
+
+        $result = $auth->getStatus();
+
+        if ($result !== $status) {
+            $msg = sprintf('Expected status "%s", got "%s"', $status, $result);
+            throw new Exception($msg);
+        }
+
+        return $result;
     }
 
     /**
@@ -102,40 +105,31 @@ class Logout extends AbstractService
      */
     public function __invoke(Auth $auth, $status = AuthStatus::ANON)
     {
-        $payload = clone $this->payload;
-
-        $payload->setExtras(['auth' => $auth]);
+        $this->init($auth, ['status' => $status]);
 
         try {
-
-            $this->logout($auth, $status);
-
-            $domainStatus = Status::SUCCESS;
-            $signal = 'logout.success';
-
-            $result = $auth->getStatus();
-
-            if ($result !== $status) {
-                $domainStatus = Status::ERROR;
-                $payload->setOutput(
-                    new Exception(
-                        sprintf(
-                            'Expected status "%s", got "%s"',
-                            $status, $result
-                        )
-                    )
-                );
-                $signal = 'logout.failure';
-            }
-
-            $payload->setStatus($domainStatus);
-            $this->notify($signal, $payload);
-
+            $this->doLogout($auth, $status);
+            $this->success($status);
         } catch (Exception $e) {
-            $payload->setStatus(Status::ERROR)->setOutput($e);
-            $this->notify('logout.error', $payload);
+            $this->error($e);
         }
 
-        return $payload;
+        $this->notify();
+        return $this->payload;
+    }
+
+    /**
+     * Success
+     *
+     * @param mixed $status Current auth status after logout
+     *
+     * @return void
+     *
+     * @access protected
+     */
+    protected function success($status)
+    {
+        $this->payload->setStatus(Status::SUCCESS)
+            ->setOutput($status);
     }
 }
