@@ -56,6 +56,11 @@ class AuthRouteRule implements RuleInterface
     public function __invoke(Request $request, Route $route)
     {
         $auth = $route->auth;
+        if (is_array($auth)) {
+            $auth = isset($auth['isAuthenticated'])
+                ? $auth['isAuthenticated']
+                : null;
+        }
         if (null !== $auth) {
             $status = $this->getAuthStatus($request);
             if ($auth) {
