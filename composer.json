@@ -2,7 +2,7 @@
     "name": "jnjxp/vk",
     "description": "Voight-Kampff ADR Authentication module",
     "homepage":"https://github.com/jnjxp/jnjxp.vk",
-    "license": "AGPL",
+    "license": "MIT",
     "authors": [
         {
             "name": "jake johns",
@@ -13,14 +13,11 @@
         "psr/http-message": "^1.0",
         "aura/payload": "^3.0",
         "aura/auth": "^2.0",
-        "vperyod/auth-handler":"^0.2.0"
+        "vperyod/auth-handler":"^0.2.0",
+        "vperyod/session-handler": "^0.2.0"
     },
     "require-dev":{
-        "zendframework/zend-diactoros": "~1.0",
-        "radar/adr":"^1.0",
-        "fusible/auth-provider" : "dev-develop",
-        "vperyod/session-handler":"dev-develop",
-        "vperyod/accept-handler":"dev-develop"
+        "zendframework/zend-diactoros": "~1.0"
     },
     "autoload": {
         "psr-4": {
@@ -30,13 +27,7 @@
     "autoload-dev": {
         "psr-4": {
             "Jnjxp\\Vk\\":"tests/",
-            "Aura\\Di\\": "vendor/aura/di/tests/",
-            "Vperyod\\SessionHandler\\": "vendor/vperyod/session-handler/tests/"
+            "Aura\\Di\\": "vendor/aura/di/tests/"
         }
-    },
-    "suggest": {
-        "vperyod/session-handler":"for responders",
-        "vperyod/accept-handler":"for responders"
-    },
-    "minimum-stability": "dev"
+    }
 }

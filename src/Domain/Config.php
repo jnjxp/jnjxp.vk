@@ -17,9 +17,12 @@
  * @link      https://github.com/jnjxp/jnjxp.vk
  */
 
-namespace Jnjxp\Vk;
+namespace Jnjxp\Vk\Domain;
 
-use Aura\Di\ConfigCollection;
+use Aura\Di\Container;
+use Aura\Di\ContainerConfig;
+
+use Aura\Auth\Service;
 
 /**
  * Config
@@ -32,23 +35,28 @@ use Aura\Di\ConfigCollection;
  *
  * @see ContainerConfig
  */
-class Config extends ConfigCollection
+class Config extends ContainerConfig
 {
 
     /**
-     * __construct
+     * Define
      *
-     * @return mixed
+     * @param Container $di Aura\Di Container
+     *
+     * @return void
      *
      * @access public
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
      */
-    public function __construct()
+    public function define(Container $di)
     {
-        parent::__construct(
-            [
-                Domain\Config::class,
-                Web\Config::class
-            ]
-        );
+        $di->params[Login::class] = [
+            'service' => $di->lazyGet(Service\LoginService::class)
+        ];
+
+        $di->params[Logout::class] = [
+            'service' => $di->lazyGet(Service\LogoutService::class)
+        ];
     }
 }
