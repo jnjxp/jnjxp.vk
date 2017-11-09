@@ -19,7 +19,7 @@ class Responder extends AbstractResponder
 
     protected function notValid()
     {
-        return $this->viewBody(
+        $this->viewBody(
             'vk/login',
             ['errors' => $this->payload->getMessages()]
         );
@@ -27,7 +27,7 @@ class Responder extends AbstractResponder
 
     protected function notAuthenticated()
     {
-        return $this->viewBody(
+        $this->viewBody(
             'vk/login',
             ['errors' => ['Login Failed']]
         );

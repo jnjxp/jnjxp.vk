@@ -49,10 +49,10 @@ class Config extends ContainerConfig
             $rules  = $router->getRuleIterator();
 
             $rule   = $di->newInstance(Router\AuthRouteRule::class);
-            $routes = $di->newInstance(Router\Routes::class);
+            $routes = $di->newInstance(Action::class);
 
             $rules->append($rule);
-            $map->attach(Action::class, '', $routes);
+            $map->attach('', '', $routes);
         }
 
         if ($di->has(AuraView::class)) {

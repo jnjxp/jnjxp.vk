@@ -7,10 +7,9 @@ namespace Jnjxp\Vk\Web\Action;
 use Aura\View\View;
 
 use Aura\Payload_Interface\PayloadInterface;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Jnjxp\Molniya\MessageAwareTrait;
 use Psr\Http\Message\ResponseInterface as Response;
-
-use Vperyod\SessionHandler\SessionRequestAwareTrait;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
  *
@@ -21,14 +20,13 @@ use Vperyod\SessionHandler\SessionRequestAwareTrait;
  */
 class AbstractResponder
 {
-
-    use SessionRequestAwareTrait;
+    use MessageAwareTrait;
 
     /**
      *
      * The domain payload (i.e. the output from the domain).
      *
-     * @var PayloadInterface
+     * @var PayloadInterface | null
      *
      */
     protected $payload;
@@ -111,7 +109,7 @@ class AbstractResponder
     protected function messages()
     {
         if (! $this->messages) {
-            $this->messages = $this->newMessenger($this->request);
+            $this->messages = $this->safeGetMessenger($this->request);
         }
         return $this->messages;
     }
