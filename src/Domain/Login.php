@@ -36,7 +36,7 @@ class Login extends AbstractService
                 ->setMessages(['username' => 'Username is required'])
                 ->setOutput($exception);
 
-        } catch (Auth\Exception\PasswordMissing $e) {
+        } catch (Auth\Exception\PasswordMissing $exception) {
 
             $payload
                 ->setStatus(Status::NOT_VALID)

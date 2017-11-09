@@ -14,10 +14,14 @@
         "aura/payload": "^3.0",
         "aura/auth": "^2.0",
         "vperyod/auth-handler":"^0.2.0",
-        "vperyod/session-handler": "^0.2.0"
+        "jnjxp/molniya": "^0.4.0",
+        "aura/router": "^3.1",
+        "aura/di": "^3.4",
+        "aura/view": "^2.3"
     },
     "require-dev":{
-        "zendframework/zend-diactoros": "~1.0"
+        "zendframework/zend-diactoros": "~1.0",
+        "phpstan/phpstan": "^0.8.5"
     },
     "autoload": {
         "psr-4": {

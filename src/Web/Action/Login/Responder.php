@@ -9,6 +9,6 @@ class Responder extends AbstractResponder
 {
     protected function noContent()
     {
-        return $this->viewBody('vk/login');
+        $this->viewBody('vk/login');
     }
 }
