@@ -11,9 +11,6 @@ class Responder extends AbstractResponder
 
     protected function success()
     {
-        $this->messages()
-            ->success('You are logged out');
-
         return $this->redirect($this->redirectTo);
     }
 }

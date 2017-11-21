@@ -7,7 +7,6 @@ namespace Jnjxp\Vk\Web\Action;
 use Aura\View\View;
 
 use Aura\Payload_Interface\PayloadInterface;
-use Jnjxp\Molniya\MessageAwareTrait;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -20,8 +19,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
  */
 class AbstractResponder
 {
-    use MessageAwareTrait;
-
     /**
      *
      * The domain payload (i.e. the output from the domain).
@@ -46,15 +43,6 @@ class AbstractResponder
      *
      */
     protected $response;
-
-    /**
-     * Messages
-     *
-     * @var mixed
-     *
-     * @access protected
-     */
-    protected $messages;
 
     /**
      * View
@@ -104,14 +92,6 @@ class AbstractResponder
         $method = $this->getMethodForPayload();
         $this->$method();
         return $this->response;
-    }
-
-    protected function messages()
-    {
-        if (! $this->messages) {
-            $this->messages = $this->safeGetMessenger($this->request);
-        }
-        return $this->messages;
     }
 
     protected function redirect($uri, $status = 302)
