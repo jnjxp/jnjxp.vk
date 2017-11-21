@@ -8,7 +8,7 @@ use Jnjxp\Vk\Domain;
 
 class Action
 {
-    const LOGIN        = self::class . '\\LOGIN';
+    const LOGIN        = self::class . '\\Login';
     const AUTHENTICATE = self::class . '\\Authenticate';
     const LOGOUT       = self::class . '\\Logout';
 
