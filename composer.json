@@ -14,7 +14,6 @@
         "aura/payload": "^3.0",
         "aura/auth": "^2.0",
         "vperyod/auth-handler":"^0.2.0",
-        "jnjxp/molniya": "^0.4.0",
         "aura/router": "^3.1",
         "aura/di": "^3.4",
         "aura/view": "^2.3"
