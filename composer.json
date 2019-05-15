@@ -1,6 +1,6 @@
 {
     "name": "jnjxp/vk",
-    "description": "Voight-Kampff ADR Authentication module",
+    "description": "Voight-Kampff authentication system",
     "homepage":"https://github.com/jnjxp/jnjxp.vk",
     "license": "MIT",
     "authors": [
@@ -10,17 +10,18 @@
         }
     ],
     "require": {
-        "psr/http-message": "^1.0",
-        "aura/payload": "^3.0",
         "aura/auth": "^2.0",
-        "vperyod/auth-handler":"^0.2.0",
         "aura/router": "^3.1",
-        "aura/di": "^3.4",
-        "aura/view": "^2.3"
+        "psr/http-message": "^1.0",
+        "psr/http-server-handler": "^1.0",
+        "psr/http-server-middleware": "^1.0",
+        "aura/session": "^2.1",
+        "fig/http-message-util": "^1.1",
+        "container-interop/service-provider": "^0.4.0"
     },
     "require-dev":{
-        "zendframework/zend-diactoros": "~1.0",
-        "phpstan/phpstan": "^0.8.5"
+        "zendframework/zend-diactoros": "~2.0",
+        "phpunit/phpunit": "^8.1"
     },
     "autoload": {
         "psr-4": {
@@ -29,8 +30,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Jnjxp\\Vk\\":"tests/",
-            "Aura\\Di\\": "vendor/aura/di/tests/"
+            "Jnjxp\\Vk\\":"tests/"
         }
     }
 }
