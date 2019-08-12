@@ -19,14 +19,21 @@
 
 declare(strict_types = 1);
 
-namespace Jnjxp\Vk;
+namespace Jnjxp\Vk\Action;
 
-use Aura\Auth;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Aura\Auth\Service\LogoutService;
+use Jnjxp\Vk\Responder\ResponderInterface as Responder;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
  * LogoutHandler
+ *
+ * @category Action
+ * @package  Jnjxp\Vk
+ * @author   Jake Johns <jake@jakejohns.net>
+ * @license  https://jnj.mit-license.org/ MIT License
+ * @link     https://jakejohns.net
  *
  * @see AbstractHandler
  */
@@ -36,22 +43,20 @@ class LogoutHandler extends AbstractHandler
     /**
      * __construct
      *
-     * @param Auth\Service\LogoutService $service
-     * @param ResponderInterface $responder
+     * @param LogoutService $service   Logout service
+     * @param Responder     $responder responder
      *
      * @access public
      */
-    public function __construct(
-        Auth\Service\LogoutService $service,
-        ResponderInterface $responder
-    ) {
+    public function __construct(LogoutService $service, Responder $responder)
+    {
         parent::__construct($service, $responder);
     }
 
     /**
      * Handle logout request
      *
-     * @param Request $request
+     * @param Request $request request
      *
      * @return Response
      *
@@ -62,6 +67,7 @@ class LogoutHandler extends AbstractHandler
         try {
             $auth  = $this->getAuth($request);
             $this->service->logout($auth);
+            $this->getSession($request)->regenerateId();
             $response = $this->responder->logout($request);
         } catch (\Exception $exception) {
             $response = $this->responder->error($request, $exception);

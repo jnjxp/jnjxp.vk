@@ -19,11 +19,13 @@
 
 declare(strict_types = 1);
 
-namespace Jnjxp\Vk;
+namespace Jnjxp\Vk\Action;
 
 use Aura\Auth;
-use Psr\Http\Server\RequestHandlerInterface as Handler;
 use Jnjxp\Vk\AuthAwareTrait;
+use Jnjxp\Vk\SessionAwareTrait;
+use Jnjxp\Vk\Responder\ResponderInterface as Responder;
+use Psr\Http\Server\RequestHandlerInterface as Handler;
 
 /**
  * AbstractHandler
@@ -40,6 +42,7 @@ use Jnjxp\Vk\AuthAwareTrait;
 abstract class AbstractHandler implements Handler
 {
     use AuthAwareTrait;
+    use SessionAwareTrait;
 
     /**
      * Aura Auth service
@@ -62,14 +65,13 @@ abstract class AbstractHandler implements Handler
     /**
      * __construct
      *
-     * @param object             $service   Service
-     * @param ResponderInterface $responder Responder
+     * @param object    $service   Service
+     * @param Responder $responder Responder
      *
      * @access public
      */
-    public function __construct(
-        object $service, ResponderInterface $responder
-    ) {
+    public function __construct(object $service, Responder $responder)
+    {
         $this->service = $service;
         $this->responder = $responder;
     }

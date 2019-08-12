@@ -21,13 +21,14 @@ namespace Jnjxp\Vk;
 
 use Aura\Session\Session;
 use Jnjxp\Vk\Middleware\ResumeSession;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 trait SessionAwareTrait
 {
     /**
-     * getSession
+     * GetSession
      *
-     * @param Request $request
+     * @param Request $request Request
      *
      * @return Session
      *

@@ -26,7 +26,13 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Throwable;
 
 /**
- * Interface: ResponderInterface
+ * ResponderInterface
+ *
+ * @category Responder
+ * @package  Jnjxp\Vk
+ * @author   Jake Johns <jake@jakejohns.net>
+ * @license  https://jnj.mit-license.org/ MIT License
+ * @link     https://jakejohns.net
  */
 interface ResponderInterface
 {
@@ -85,5 +91,5 @@ interface ResponderInterface
      *
      * @access public
      */
-    public function notAuthenticated($request) : Response;
+    public function authenticationFailed($request) : Response;
 }

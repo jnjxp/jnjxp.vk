@@ -9,7 +9,7 @@
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE file for details.
  *
- * @category  Handler
+ * @category  Action
  * @package   Jnjxp\Vk
  * @author    Jake Johns <jake@jakejohns.net>
  * @copyright 2019 Jake Johns
@@ -19,38 +19,44 @@
 
 declare(strict_types = 1);
 
-namespace Jnjxp\Vk;
+namespace Jnjxp\Vk\Action;
 
-use Aura\Auth;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Aura\Auth\Exception as Error;
+use Aura\Auth\Service\LoginService;
+use Jnjxp\Vk\Responder\ResponderInterface as Responder;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
- * LoginHandler
+ * Login
+ *
+ * @category Action
+ * @package  Jnjxp\Vk
+ * @author   Jake Johns <jake@jakejohns.net>
+ * @license  https://jnj.mit-license.org/ MIT License
+ * @link     https://jakejohns.net
  *
  * @see AbstractHandler
  */
-class LoginHandler extends AbstractHandler
+class Login extends AbstractHandler
 {
     /**
      * __construct
      *
-     * @param Auth\Service\LoginService $service
-     * @param ResponderInterface $responder
+     * @param LoginService $service   login service
+     * @param Responder    $responder responder
      *
      * @access public
      */
-    public function __construct(
-        Auth\Service\LoginService $service,
-        ResponderInterface $responder
-    ) {
+    public function __construct(LoginService $service, Responder $responder)
+    {
         parent::__construct($service, $responder);
     }
 
     /**
      * Get Input
      *
-     * @param Request $request
+     * @param Request $request request
      *
      * @return array
      *
@@ -69,7 +75,7 @@ class LoginHandler extends AbstractHandler
     /**
      * Handle login request
      *
-     * @param Request $request
+     * @param Request $request request
      *
      * @return Response
      *
@@ -83,13 +89,14 @@ class LoginHandler extends AbstractHandler
             $input = $this->getInput($request);
 
             $this->service->login($auth, $input);
+            $this->getSession($request)->regenerateId();
 
-            $response = $this->responder->authenticated($request);
+            $response = $this->responder->authenticated($request, $auth);
 
-        } catch (Auth\Exception\UsernameMissing| Auth\Exception\PasswordMissing $exception) {
-            $response = $this->responder->invalid($request, 'Enter Required information');
-        } catch (Auth\Exception $exception) {
-            $response = $this->responder->notAuthenticated($request);
+        } catch (Error\UsernameMissing | Error\PasswordMissing $exception) {
+            $response = $this->responder->invalid($request, $exception);
+        } catch (Error $exception) {
+            $response = $this->responder->authenticationFailed($request, $exception);
         } catch (\Throwable $exception) {
             $response = $this->responder->error($request, $exception);
         }
