@@ -1,5 +1,5 @@
 # jnjxp.vk
-Voight-Kampff: An ADR Authentication module.
+Voight-Kampff: An Expressive Authentication module.
 
 [![Latest version][ico-version]][link-packagist]
 [![Build Status][ico-travis]][link-travis]

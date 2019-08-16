@@ -29,3 +29,6 @@ composer.lock
 .Trash-*
 
 
+
+.phpunit.result.cache
+cover/
