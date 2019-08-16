@@ -53,10 +53,7 @@ class ResumeAuthMiddleware implements MiddlewareInterface
     protected function getUser(Request $request) : ?User
     {
         $session = $this->getSession($request);
-
-        return $session->has(User::class)
-            ? $this->userFactory->fromSession($session)
-            : null;
+        return $this->userFactory->fromSession($session);
     }
 
     protected function newHelper(User $user = null) : AuthHelperInterface

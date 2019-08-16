@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jnjxp\Vk\Aware;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Jnjxp\Vk\Exception;
 use Zend\Expressive\Session;
 
 trait SessionAwareTrait
@@ -21,7 +22,11 @@ trait SessionAwareTrait
         $session = $request->getAttribute($this->sessionAttribute, false);
 
         if (! $session instanceof Session\SessionInterface) {
-            throw new \Exception("Session not available");
+            throw Exception\MissingAttributeException::missing(
+                Session\SessionInterface::class,
+                $this->sessionAttribute,
+                $this
+            );
         }
 
         return $session;
