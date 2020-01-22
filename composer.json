@@ -43,7 +43,7 @@
         }
     },
     "extra": {
-        "zf": {
+        "laminas": {
             "config-provider": [
                 "Jnjxp\\Vk\\ConfigProvider"
             ]
