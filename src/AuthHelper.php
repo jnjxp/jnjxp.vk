@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jnjxp\Vk;
 
-use Zend\Expressive\Authentication\UserInterface as User;
+use Mezzio\Authentication\UserInterface as User;
 
 class AuthHelper implements AuthHelperInterface
 {

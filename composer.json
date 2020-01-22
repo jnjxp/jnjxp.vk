@@ -1,7 +1,7 @@
 {
     "name": "jnjxp/vk",
     "description": "Voight-Kampff Authentication module",
-    "homepage":"https://github.com/jnjxp/jnjxp.vk",
+    "homepage": "https://github.com/jnjxp/jnjxp.vk",
     "license": "MIT",
     "authors": [
         {
@@ -19,14 +19,15 @@
         "psr/http-message": "^1.0",
         "psr/http-server-handler": "^1.0",
         "psr/http-server-middleware": "^1.0",
-        "zendframework/zend-diactoros": "^2.1",
-        "zendframework/zend-expressive": "^3.2",
-        "zendframework/zend-expressive-authentication": "^1.1",
-        "zendframework/zend-expressive-authentication-session": "^1.0",
-        "zendframework/zend-expressive-flash": "^1.0",
-        "zendframework/zend-expressive-session": "^1.2"
+        "laminas/laminas-diactoros": "^2.1",
+        "mezzio/mezzio": "^3.2",
+        "mezzio/mezzio-authentication": "^1.1",
+        "mezzio/mezzio-authentication-session": "^1.0",
+        "mezzio/mezzio-flash": "^1.0",
+        "mezzio/mezzio-session": "^1.2",
+        "laminas/laminas-dependency-plugin": "^1.0"
     },
-    "require-dev":{
+    "require-dev": {
         "paulthebaud/phpunit-generator": "^2.1",
         "pds/skeleton": "^1.0",
         "phpunit/phpunit": "^8.3"
@@ -38,7 +39,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Jnjxp\\Vk\\":"tests/"
+            "Jnjxp\\Vk\\": "tests/"
         }
     },
     "extra": {

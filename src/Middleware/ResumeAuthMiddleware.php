@@ -12,8 +12,8 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as Handler;
-use Zend\Expressive\Authentication\UserInterface as User;
-use Zend\Expressive\Template\TemplateRendererInterface as Template;
+use Mezzio\Authentication\UserInterface as User;
+use Mezzio\Template\TemplateRendererInterface as Template;
 
 class ResumeAuthMiddleware implements MiddlewareInterface
 {

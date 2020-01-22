@@ -6,7 +6,7 @@ namespace Jnjxp\Vk\Middleware;
 
 use Jnjxp\Vk\UserFactoryInterface;
 use Psr\Container\ContainerInterface;
-use Zend\Expressive\Template\TemplateRendererInterface;
+use Mezzio\Template\TemplateRendererInterface;
 
 class ResumeAuthMiddlewareFactory
 {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Jnjxp\Vk;
 
-use Zend\Expressive\Application;
-use Zend\Expressive\Authentication\AuthenticationInterface;
-use Zend\Expressive\Authentication\Session\PhpSession;
+use Mezzio\Application;
+use Mezzio\Authentication\AuthenticationInterface;
+use Mezzio\Authentication\Session\PhpSession;
 
 class ConfigProvider
 {

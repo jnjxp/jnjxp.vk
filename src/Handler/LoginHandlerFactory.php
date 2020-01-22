@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Jnjxp\Vk\Handler;
 
 use Psr\Container\ContainerInterface;
-use Zend\Expressive\Authentication\Session\PhpSession;
-use Zend\Expressive\Template\TemplateRendererInterface;
+use Mezzio\Authentication\Session\PhpSession;
+use Mezzio\Template\TemplateRendererInterface;
 
 class LoginHandlerFactory
 {
