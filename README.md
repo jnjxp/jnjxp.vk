@@ -51,6 +51,7 @@ composer require mezzio/mezzio-session-ext
 ```php
 // config/pipeline.php
 $app->pipe(\Mezzio\Session\SessionMiddleware::class);
+$app->pipe(\Jnjxp\Vk\Middleware\ResumeAuthMiddleware::class);
 ```
 
 ## Usage
