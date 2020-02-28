@@ -11,6 +11,48 @@ Voight-Kampff: An Expressive Authentication module.
 composer require jnjxp/vk
 ```
 
+## Config
+
+### Add Routes
+```php
+// config/routes.php
+//...
+(new Jnjxp\Vk\ConfigProvider())->registerRoutes($app);
+
+```
+
+### Adapter
+```php
+// config/autoload/auth.global.php
+// eg htaccess
+use Mezzio\Authentication\UserRepository;
+use Mezzio\Authentication\UserRepositoryInterface;
+
+return [
+    'dependencies' => [
+        'aliases' => [
+            UserRepositoryInterface::class => UserRepository\Htpasswd::class
+        ]
+    ],
+    'authentication' => [
+        'redirect' => '/login',
+        'htpasswd' => dirname(__DIR__) . '/../htpasswd'
+    ]
+];
+```
+
+### Session persistence
+```bash
+# eg. session-ext
+composer require mezzio/mezzio-session-ext
+```
+
+### Session middleware
+```php
+// config/pipeline.php
+$app->pipe(\Mezzio\Session\SessionMiddleware::class);
+```
+
 ## Usage
 ```php
 // ...todo
