@@ -24,8 +24,7 @@
         "mezzio/mezzio-authentication": "^1.1",
         "mezzio/mezzio-authentication-session": "^1.0",
         "mezzio/mezzio-flash": "^1.0",
-        "mezzio/mezzio-session": "^1.2",
-        "laminas/laminas-dependency-plugin": "^1.0"
+        "mezzio/mezzio-session": "^1.2"
     },
     "require-dev": {
         "paulthebaud/phpunit-generator": "^2.1",
