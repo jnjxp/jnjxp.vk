@@ -10,11 +10,11 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Zend\Diactoros\ServerRequest;
-use Zend\Diactoros\Response;
-use Zend\Expressive\Authentication\UserInterface as User;
-use Zend\Expressive\Session\SessionInterface;
-use Zend\Expressive\Template\TemplateRendererInterface;
+use Laminas\Diactoros\ServerRequest;
+use Laminas\Diactoros\Response;
+use Mezzio\Authentication\UserInterface as User;
+use Mezzio\Session\SessionInterface;
+use Mezzio\Template\TemplateRendererInterface;
 
 /**
  * Class ResumeAuthMiddlewareTest.

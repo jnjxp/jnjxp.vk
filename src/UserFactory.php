@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Jnjxp\Vk;
 
-use Zend\Expressive\Authentication\DefaultUser;
-use Zend\Expressive\Authentication\UserInterface;
-use Zend\Expressive\Session\SessionInterface;
+use Mezzio\Authentication\DefaultUser;
+use Mezzio\Authentication\UserInterface;
+use Mezzio\Session\SessionInterface;
 
 class UserFactory implements UserFactoryInterface
 {

@@ -5,8 +5,8 @@ namespace Test\Jnjxp\Vk;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Jnjxp\Vk\UserFactory;
-use Zend\Expressive\Authentication\UserInterface;
-use Zend\Expressive\Session\SessionInterface;
+use Mezzio\Authentication\UserInterface;
+use Mezzio\Session\SessionInterface;
 
 /**
  * Class UserFactoryTest.

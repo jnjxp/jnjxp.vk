@@ -5,7 +5,7 @@ namespace Test\Jnjxp\Vk\Aware;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Jnjxp\Vk\Aware\SessionAwareTrait;
-use Zend\Diactoros\ServerRequest;
+use Laminas\Diactoros\ServerRequest;
 use Jnjxp\Vk\Exception\MissingAttributeException;
 
 /**

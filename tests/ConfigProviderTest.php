@@ -5,7 +5,7 @@ namespace Test\Jnjxp\Vk;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Jnjxp\Vk\ConfigProvider;
-use Zend\Expressive\Application;
+use Mezzio\Application;
 
 /**
  * Class ConfigProviderTest.

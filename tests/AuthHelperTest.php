@@ -5,8 +5,8 @@ namespace Jnjxp\Vk;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Jnjxp\Vk\AuthHelper;
-use Zend\Expressive\Authentication\UserInterface;
-use Zend\Expressive\Authentication\DefaultUser;
+use Mezzio\Authentication\UserInterface;
+use Mezzio\Authentication\DefaultUser;
 
 /**
  * Class AuthHelperTest.

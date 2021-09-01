@@ -5,14 +5,14 @@ namespace Jnjxp\Vk\Handler;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Jnjxp\Vk\Handler\LoginHandler;
-use Zend\Expressive\Template\TemplateRendererInterface;
-use Zend\Expressive\Authentication\AuthenticationInterface;
+use Mezzio\Template\TemplateRendererInterface;
+use Mezzio\Authentication\AuthenticationInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Zend\Diactoros\ServerRequest;
-use Zend\Diactoros\Response;
-use Zend\Expressive\Session\SessionInterface;
-use Zend\Expressive\Authentication\UserInterface as User;
+use Laminas\Diactoros\ServerRequest;
+use Laminas\Diactoros\Response;
+use Mezzio\Session\SessionInterface;
+use Mezzio\Authentication\UserInterface as User;
 
 /**
  * Class LoginHandlerTest.

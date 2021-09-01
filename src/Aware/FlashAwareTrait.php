@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Jnjxp\Vk\Aware;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Zend\Expressive\Flash;
+use Mezzio\Flash;
 
 trait FlashAwareTrait
 {
