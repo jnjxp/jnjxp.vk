@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Jnjxp\Vk\Middleware\ResumeAuthMiddlewareFactory;
 use Psr\Container\ContainerInterface;
 use Jnjxp\Vk\Middleware\ResumeAuthMiddleware;
-use Zend\Expressive\Template\TemplateRendererInterface;
+use Mezzio\Template\TemplateRendererInterface;
 use Jnjxp\Vk\UserFactoryInterface;
 
 /**

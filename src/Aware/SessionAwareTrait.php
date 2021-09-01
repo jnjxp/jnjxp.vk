@@ -6,7 +6,7 @@ namespace Jnjxp\Vk\Aware;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Jnjxp\Vk\Exception;
-use Zend\Expressive\Session;
+use Mezzio\Session;
 
 trait SessionAwareTrait
 {

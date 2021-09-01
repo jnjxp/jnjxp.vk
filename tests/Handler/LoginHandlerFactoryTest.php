@@ -7,8 +7,8 @@ use PHPUnit\Framework\TestCase;
 use Jnjxp\Vk\Handler\LoginHandlerFactory;
 use Jnjxp\Vk\Handler\LoginHandler;
 use Psr\Container\ContainerInterface;
-use Zend\Expressive\Authentication\Session\PhpSession;
-use Zend\Expressive\Template\TemplateRendererInterface;
+use Mezzio\Authentication\Session\PhpSession;
+use Mezzio\Template\TemplateRendererInterface;
 
 /**
  * Class LoginHandlerFactoryTest.

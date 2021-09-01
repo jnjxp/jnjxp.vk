@@ -7,8 +7,8 @@ use PHPUnit\Framework\TestCase;
 use Jnjxp\Vk\Handler\LogoutHandler;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Zend\Diactoros\ServerRequest;
-use Zend\Expressive\Session\SessionInterface;
+use Laminas\Diactoros\ServerRequest;
+use Mezzio\Session\SessionInterface;
 
 /**
  * Class LogoutHandlerTest.

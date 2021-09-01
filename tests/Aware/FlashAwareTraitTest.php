@@ -5,9 +5,9 @@ namespace Jnjxp\Vk\Aware;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Jnjxp\Vk\Aware\FlashAwareTrait;
-use Zend\Diactoros\ServerRequest;
+use Laminas\Diactoros\ServerRequest;
 use Jnjxp\Vk\Exception\MissingAttributeException;
-use Zend\Expressive\Flash\FlashMessagesInterface;
+use Mezzio\Flash\FlashMessagesInterface;
 
 /**
  * Class FlashAwareTraitTest.

@@ -9,12 +9,12 @@ use Jnjxp\Vk\Aware;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Zend\Diactoros\Response\HtmlResponse;
-use Zend\Diactoros\Response\RedirectResponse;
-use Zend\Expressive\Authentication\AuthenticationInterface as Adapter;
-use Zend\Expressive\Authentication\UserInterface as User;
-use Zend\Expressive\Session\SessionInterface as Session;
-use Zend\Expressive\Template\TemplateRendererInterface as Template;
+use Laminas\Diactoros\Response\HtmlResponse;
+use Laminas\Diactoros\Response\RedirectResponse;
+use Mezzio\Authentication\AuthenticationInterface as Adapter;
+use Mezzio\Authentication\UserInterface as User;
+use Mezzio\Session\SessionInterface as Session;
+use Mezzio\Template\TemplateRendererInterface as Template;
 
 class LoginHandler implements RequestHandler, RequestMethodInterface
 {

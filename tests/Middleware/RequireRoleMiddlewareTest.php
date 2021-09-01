@@ -10,8 +10,8 @@ use Jnjxp\Vk\AuthHelperInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
-use Zend\Expressive\Authentication\DefaultUser;
-use Zend\Diactoros\ServerRequest;
+use Mezzio\Authentication\DefaultUser;
+use Laminas\Diactoros\ServerRequest;
 
 /**
  * Class RequireRoleMiddlewareTest.
